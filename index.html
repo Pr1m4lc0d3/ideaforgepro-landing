@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Idea Forge Pro — Sell Before You Build</title>
+<meta name="description" content="Stress-test a startup idea through seven brutal gates until it's sellable with no product built. A ruthless AI skeptic, on your own API key. Free, in your browser.">
+<meta name="theme-color" content="#0a1424">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c1728'/%3E%3Cpath fill='%23ff5a1f' d='M16 4c1.2 5 6 7 6 12.5A6 6 0 0 1 10 16.5c0-1.8 1-3 1-3-3 1.8-4 4.6-4 7.5a9 9 0 0 0 18 0C25 15 18 13 16 4z'/%3E%3Cpath fill='%23ffd23f' d='M16.5 16c.9 1.8 2.8 2.8 2.8 5.4a2.9 2.9 0 0 1-5.7 0c0-1.8 1.9-2.9 2.9-5.4z'/%3E%3C/svg%3E">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ideaforgepro.com/">
+<meta property="og:site_name" content="Idea Forge Pro">
+<meta property="og:title" content="Idea Forge Pro — Sell Before You Build">
+<meta property="og:description" content="Stress-test a startup idea through seven brutal gates until it's sellable with no product built. A ruthless AI skeptic, on your own API key.">
+<meta property="og:image" content="https://ideaforgepro.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Idea Forge Pro — Stop building startups nobody buys.">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Idea Forge Pro — Sell Before You Build">
+<meta name="twitter:description" content="Stress-test a startup idea through seven brutal gates until it's sellable with no product built. Free, in your browser.">
+<meta name="twitter:image" content="https://ideaforgepro.com/og-image.png">
+<style>
+  /* ===== Design tokens — one source for every visual constant ===== */
+  :root{
+    --bg:#0a1424; --bg-2:#0f1e33; --panel:#122540; --line:#20334f; --line-2:#2c456a;
+    --ink:#eaf1fb; --ink-2:#a9bcda; --ink-3:#6f83a3;
+    --accent:#4c9aff; --accent-soft:#16294a;
+    --flame:#ff5a1f; --flame-2:#ffd23f; --flame-soft:#2a170d;
+    --grid:rgba(120,170,240,.05);
+    --mono:"Cascadia Code","Cascadia Mono",Consolas,"SF Mono",ui-monospace,monospace;
+    --ui:"Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+    /* type scale */ --fs-hero:clamp(38px,7vw,74px); --fs-h2:clamp(26px,4vw,40px); --fs-h3:20px; --fs-lead:clamp(17px,2.2vw,21px); --fs-body:16px; --fs-label:12px;
+    /* space + radius */ --sp:20px; --sp-lg:clamp(64px,10vw,120px); --r:16px; --r-s:10px; --wrap:1080px;
+  }
+  *{box-sizing:border-box} html{background:var(--bg)} body{margin:0}
+  body{
+    font-family:var(--ui); color:var(--ink); font-size:var(--fs-body); line-height:1.6;
+    background:
+      radial-gradient(1200px 600px at 70% -10%, rgba(76,154,255,.10), transparent 60%),
+      radial-gradient(900px 500px at 10% 8%, rgba(255,90,31,.07), transparent 55%),
+      linear-gradient(var(--grid) 1px,transparent 1px) 0 0/30px 30px,
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/30px 30px,
+      var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+  .eyebrow{font-family:var(--mono);font-size:var(--fs-label);letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin:0}
+  .flame{color:var(--flame)}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);background:rgba(10,20,36,.72);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:-.01em;font-size:17px}
+  .brand .mark{font-size:19px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:650;font-size:15px;border-radius:var(--r-s);padding:11px 18px;border:1px solid transparent;cursor:pointer;transition:filter .15s,border-color .15s,background .15s}
+  .btn.primary{background:linear-gradient(180deg,#5aa2ff,#2f7be6);color:#03152e;box-shadow:0 6px 20px rgba(47,123,230,.35)}
+  .btn.primary:hover{filter:brightness(1.07)}
+  .btn.ghost{border-color:var(--line-2);color:var(--ink)}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.sm{padding:9px 15px;font-size:14px}
+
+  /* hero */
+  header.hero{padding:clamp(56px,11vw,120px) 0 var(--sp-lg)}
+  .hero h1{font-size:var(--fs-hero);line-height:1.02;letter-spacing:-.03em;font-weight:850;margin:16px 0 0;text-wrap:balance;max-width:15ch}
+  .hero .lead{font-size:var(--fs-lead);color:var(--ink-2);max-width:56ch;margin:22px 0 0}
+  .hero .cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:34px 0 0}
+  .hero .fine{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);margin:18px 0 0;letter-spacing:.02em}
+
+  section{padding:var(--sp-lg) 0}
+  h2{font-size:var(--fs-h2);line-height:1.08;letter-spacing:-.02em;font-weight:800;margin:12px 0 0;text-wrap:balance;max-width:20ch}
+  .sub{color:var(--ink-2);font-size:var(--fs-lead);max-width:60ch;margin:16px 0 0}
+
+  /* problem */
+  .problem p{color:var(--ink-2);font-size:var(--fs-lead);max-width:64ch;margin:16px 0 0}
+  .problem strong{color:var(--ink)}
+
+  /* seven gates — a numbered SEQUENCE on a spine (never orphans) */
+  .gates{position:relative;margin:44px 0 0;padding-left:8px}
+  .gates::before{content:"";position:absolute;left:32px;top:14px;bottom:14px;width:2px;background:linear-gradient(var(--flame),var(--accent))}
+  .gate{position:relative;display:grid;grid-template-columns:66px 1fr;gap:20px;align-items:start;padding:16px 0}
+  .gate .num{position:relative;z-index:1;width:66px;height:66px;border-radius:50%;background:var(--panel);border:1px solid var(--line-2);
+    display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:18px;color:var(--accent)}
+  .gate:first-child .num{border-color:var(--flame);color:var(--flame)}
+  .gate .gt h3{font-size:var(--fs-h3);margin:6px 0 0;font-weight:750;letter-spacing:-.01em}
+  .gate .gt p{color:var(--ink-2);margin:6px 0 0;max-width:64ch}
+
+  /* skeptic */
+  .skeptic-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;margin:36px 0 0}
+  @media (max-width:820px){.skeptic-grid{grid-template-columns:1fr}}
+  .term{background:#07101d;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+  .term .bar{display:flex;align-items:center;gap:7px;padding:12px 15px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+  .term .dot{width:11px;height:11px;border-radius:50%}
+  .term .body{padding:18px 18px 22px;font-family:var(--mono);font-size:13.5px;line-height:1.7}
+  .term .cmd{color:var(--ink)} .term .out{color:var(--accent)} .term .warn{color:var(--flame-2)}
+  .checks{display:flex;flex-direction:column;gap:14px;margin:22px 0 0}
+  .check{display:flex;gap:12px;align-items:flex-start}
+  .check .ic{flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+  .check p{margin:0;color:var(--ink-2)} .check b{color:var(--ink)}
+
+  /* who — 2 even cards */
+  .who{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:40px 0 0}
+  @media (max-width:640px){.who{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+  .card h3{font-size:var(--fs-h3);margin:0;font-weight:750}
+  .card p{color:var(--ink-2);margin:10px 0 0}
+
+  /* final cta */
+  .final{text-align:center;background:
+      radial-gradient(600px 300px at 50% 0%, rgba(255,90,31,.10), transparent 65%),
+      var(--bg-2);
+    border:1px solid var(--line);border-radius:calc(var(--r) + 6px);padding:clamp(44px,8vw,80px) 24px;margin:var(--sp-lg) 0 0}
+  .final h2{margin:0 auto;max-width:18ch}
+  .final .sub{margin:16px auto 0}
+  .final .cta{display:flex;justify-content:center;margin:30px 0 0}
+
+  footer{border-top:1px solid var(--line);margin-top:var(--sp-lg);padding:34px 0}
+  footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--ink-3);font-size:14px}
+  footer .brand{font-size:15px}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  @media (prefers-reduced-motion:no-preference){.btn,.gate .num{transition:all .15s ease}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="/"><span class="mark flame">🔥</span> Idea Forge Pro</a>
+    <a class="btn primary sm" href="https://app.ideaforgepro.com">Forge an idea free →</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Sell before you build</p>
+    <h1>Stop building startups <span class="flame">nobody buys.</span></h1>
+    <p class="lead">Prove the sale before you write a line of code. Idea Forge Pro runs your idea through seven brutal gates — and won't let it pass until it's sellable with no product built.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://app.ideaforgepro.com">Forge an idea free →</a>
+      <a class="btn ghost" href="#gates">See the seven gates</a>
+    </div>
+    <p class="fine">Free · runs in your browser · bring your own API key · nothing stored on our servers</p>
+  </div>
+</header>
+
+<section class="problem">
+  <div class="wrap">
+    <p class="eyebrow">The problem</p>
+    <h2>Founders build. Then pitch. Then find out nobody wanted it.</h2>
+    <p>The default playbook is backwards. You spend months building, then go looking for customers — only to learn the problem wasn't real, the price was wrong, or the buyer doesn't exist. <strong>Most ideas die in the market, not in the code.</strong> The code is just where founders hide from the hard questions.</p>
+    <p>Idea Forge Pro makes you answer those questions <strong>first</strong> — before a single line is written.</p>
+  </div>
+</section>
+
+<section id="gates">
+  <div class="wrap">
+    <p class="eyebrow">The seven gates</p>
+    <h2>Every idea must pass all seven. No shortcuts.</h2>
+    <div class="gates">
+      <div class="gate"><div class="num">01</div><div class="gt"><h3>Buyer</h3><p>A specific, reachable person who has already paid for something like this — not a "market."</p></div></div>
+      <div class="gate"><div class="num">02</div><div class="gt"><h3>Problem</h3><p>Painful, frequent, and actively worked around — stated in the buyer's own words, with a reason to act now.</p></div></div>
+      <div class="gate"><div class="num">03</div><div class="gt"><h3>Offer &amp; price</h3><p>The outcome they're buying, at a price where they say yes without hesitation.</p></div></div>
+      <div class="gate"><div class="num">04</div><div class="gt"><h3>Value artifact</h3><p>Something tangible that proves the value before the product exists — and does the selling for you.</p></div></div>
+      <div class="gate"><div class="num">05</div><div class="gt"><h3>Pre-build test</h3><p>A real dollar or a signature before any code — with the pass line and the kill line set in advance.</p></div></div>
+      <div class="gate"><div class="num">06</div><div class="gt"><h3>Channel</h3><p>One channel, gone deep, aimed at people showing intent — not a scraped list.</p></div></div>
+      <div class="gate"><div class="num">07</div><div class="gt"><h3>Builder spec</h3><p>Validated demand translated into the minimum build required to deliver the promise. Hand it off only now.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="skeptic">
+  <div class="wrap">
+    <p class="eyebrow">The AI skeptic</p>
+    <h2>A ruthless pre-seed investor that tears your idea apart.</h2>
+    <div class="skeptic-grid">
+      <div class="term">
+        <div class="bar"><span class="dot" style="background:#ff5f56"></span><span class="dot" style="background:#ffbd2e"></span><span class="dot" style="background:#27c93f"></span>&nbsp;&nbsp;skeptic — session</div>
+        <div class="body">
+          <div class="cmd">$ forge --idea "AI scheduling for dentists"</div>
+          <div class="out">→ Gate 01: Who's buying — the dentist or the office manager?</div>
+          <div class="out">→ Gate 02: What do they do today instead? How painful?</div>
+          <div class="out">→ Gate 03: At what price is this a no-brainer?</div>
+          <div class="warn">Idea status: NEEDS WORK</div>
+        </div>
+      </div>
+      <div>
+        <p class="sub" style="margin-top:0">One click forges your whole idea against a pre-seed skeptic's rubric — it hunts the weak gate, does the funnel math, and hands back a sharper version.</p>
+        <div class="checks">
+          <div class="check"><span class="ic">✓</span><p>Runs on <b>your</b> API key — OpenRouter, OpenAI, Anthropic, and more.</p></div>
+          <div class="check"><span class="ic">✓</span><p><b>Zero data stored.</b> Your idea and key never leave your browser.</p></div>
+          <div class="check"><span class="ic">✓</span><p>No account, no subscription to us, no upsell.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="who-s">
+  <div class="wrap">
+    <p class="eyebrow">Who it's for</p>
+    <h2>Built for people who can't afford to build the wrong thing.</h2>
+    <div class="who">
+      <div class="card"><h3>Founders</h3><p>You have an idea and six months of runway. Forge it before you spend a single week of that runway on code.</p></div>
+      <div class="card"><h3>Indie hackers</h3><p>You ship fast. Idea Forge Pro makes sure you're shipping toward a real buyer, not into the void.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final">
+      <p class="eyebrow" style="color:var(--flame)">Ten minutes, no product required</p>
+      <h2>Forge your idea.</h2>
+      <p class="sub">Free. Runs in your browser. Your idea and your API key stay on your device.</p>
+      <div class="cta"><a class="btn primary" href="https://app.ideaforgepro.com">Start forging →</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="/"><span class="mark flame">🔥</span> Idea Forge Pro</a>
+    <span>© 2026 ideaforgepro.com — free, browser-based, no account required</span>
+  </div>
+</footer>
+
+</body>
+</html>
