@@ -20,6 +20,9 @@
 <meta name="twitter:title" content="Idea Forge Pro — Sell Before You Build">
 <meta name="twitter:description" content="Seven gates. It tells you which one your idea fails, before you build.">
 <meta name="twitter:image" content="https://ideaforgepro.com/og-image.png?4">
+<!-- the forge plate is a CSS background, so it isn't discovered until the CSSOM
+     builds — preload it or the hero paints black for a beat -->
+<link rel="preload" as="image" href="/assets/hero-bg.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -72,17 +75,30 @@ img{max-width:100%;display:block}
    ║  HERO BACKDROP — THE ONE SWAPPABLE LAYER                              ║
    ║                                                                       ║
    ║  Everything painted behind the hero lives in this single rule.        ║
-   ║  To drop in a real image instead, replace the `background:` value      ║
-   ║  with one line:                                                       ║
    ║                                                                       ║
-   ║      background:url("/assets/hero-bg.webp") center/cover no-repeat;    ║
+   ║  Two layers, top to bottom:                                           ║
+   ║    1. the scrim — a left-heavy wash of --pitch. The headline sits on   ║
+   ║       the left, so the left stays near-solid and the wash thins out    ║
+   ║       toward the anvil on the right, letting the forge light through.  ║
+   ║    2. the forge plate itself, anchored `center bottom` so the ember    ║
+   ║       bed lands on the hero's bottom edge and reads as a floor.        ║
    ║                                                                       ║
-   ║  Nothing else on the page needs to change. To dim an image so the      ║
-   ║  headline stays readable, add after it:                               ║
-   ║      box-shadow:inset 0 0 0 100vmax rgba(8,9,12,.62);                 ║
+   ║  MEASURED, not guessed: the band is 1394×873 (~1.6:1) at a 1440        ║
+   ║  viewport, and gets WIDER as the window grows (~2.9:1 at 2560) since   ║
+   ║  its height is set by the text, not the window. So `cover` crops a     ║
+   ║  replacement plate differently at every width:                        ║
+   ║    · 1821×864 (this one) loses ~12% off EACH SIDE at 1440;            ║
+   ║    · past ~1.6:1 viewports it crops off the TOP instead — which is     ║
+   ║      why the anchor is `bottom`: the ember bed must survive.           ║
+   ║  So for any replacement: keep the light between 15% and 85%            ║
+   ║  horizontally and in the LOWER half, and let the top be expendable.    ║
+   ║  Keep it in the RIGHT half too — the left half is the text well.       ║
    ╚═══════════════════════════════════════════════════════════════════════╝ */
 .hero__bg{position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:radial-gradient(closest-side at 50% 122%,rgba(247,148,35,.16),transparent 74%)}
+  background:
+    linear-gradient(96deg,var(--pitch) 0 20%,rgba(8,9,12,.74) 44%,
+      rgba(8,9,12,.34) 68%,rgba(8,9,12,.10) 100%),
+    url("/assets/hero-bg.webp") center bottom/cover no-repeat var(--pitch)}
 .hero h1{font-size:var(--fs-h1);margin:0;max-width:12ch}
 .hero h1 em{font-style:normal;color:var(--ember)}
 .hero__lead{font-size:var(--fs-lead);color:var(--ash);max-width:46ch;margin:26px 0 0}
@@ -93,10 +109,11 @@ img{max-width:100%;display:block}
 .hero__blunt b{color:var(--ember);font-weight:600}
 .hero__fine{margin:14px 0 0;font-size:14px;color:var(--ash-dim)}
 /* ═══ the mark ═══
-   The halo sits DIRECTLY BEHIND the anvil. Its strength is one knob: set
-   --anvil-glow to 0 to remove it entirely (e.g. when a real hero image goes in
-   behind and supplies its own light). */
-.hero__art{justify-self:center;position:relative;--anvil-glow:.30}
+   The halo sits DIRECTLY BEHIND the anvil. Its strength is one knob.
+   Dropped .30 → .14 when the forge plate went in behind: the plate supplies
+   the light now, and the halo's remaining job is separation — holding the
+   anvil off the ember texture so its outline stays legible. */
+.hero__art{justify-self:center;position:relative;--anvil-glow:.14}
 .hero__art::before{content:"";position:absolute;left:50%;top:48%;translate:-50% -50%;
   width:104%;aspect-ratio:1/1;border-radius:50%;pointer-events:none;z-index:0;
   background:radial-gradient(closest-side,
@@ -151,6 +168,10 @@ img{max-width:100%;display:block}
 
 @media (max-width:900px){
   .hero__in{grid-template-columns:1fr;gap:8px}
+  /* stacked: the text no longer has a dark left half to sit in, and a narrow
+     viewport crops `cover` to the plate's bright middle — so flood the whole
+     band instead of relying on the left-heavy scrim */
+  .hero__bg{box-shadow:inset 0 0 0 100vmax rgba(8,9,12,.58)}
   .hero__art{grid-row:1;justify-self:start}
   .hero__art img{width:min(64%,300px)}
   .gate{grid-template-columns:64px 1fr;gap:18px}
