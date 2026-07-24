@@ -58,13 +58,31 @@ img{max-width:100%;display:block}
 .nav{position:sticky;top:0;z-index:20;background:rgba(8,9,12,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--edge)}
 .nav__in{display:flex;align-items:center;justify-content:space-between;height:70px}
 .brand{display:flex;align-items:center;gap:11px}
-.brand img{height:30px;width:auto;filter:drop-shadow(0 0 7px rgba(247,148,35,.5))}
-.brand span{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:.02em;text-transform:uppercase}
+.brand img{height:44px;width:auto;display:block;position:relative;top:-1px;
+  filter:drop-shadow(0 0 9px rgba(247,148,35,.55))}
+.brand span{font-family:var(--display);font-weight:800;font-size:24px;line-height:1;letter-spacing:.02em;text-transform:uppercase}
 
 /* ═══ hero ═══ */
 .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--edge)}
-.hero__in{display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:center;
+.hero__in{position:relative;z-index:1;
+  display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:center;
   padding:clamp(56px,9vw,110px) 0 clamp(64px,10vw,120px)}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  HERO BACKDROP — THE ONE SWAPPABLE LAYER                              ║
+   ║                                                                       ║
+   ║  Everything painted behind the hero lives in this single rule.        ║
+   ║  To drop in a real image instead, replace the `background:` value      ║
+   ║  with one line:                                                       ║
+   ║                                                                       ║
+   ║      background:url("/assets/hero-bg.webp") center/cover no-repeat;    ║
+   ║                                                                       ║
+   ║  Nothing else on the page needs to change. To dim an image so the      ║
+   ║  headline stays readable, add after it:                               ║
+   ║      box-shadow:inset 0 0 0 100vmax rgba(8,9,12,.62);                 ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+.hero__bg{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(closest-side at 50% 122%,rgba(247,148,35,.16),transparent 74%)}
 .hero h1{font-size:var(--fs-h1);margin:0;max-width:12ch}
 .hero h1 em{font-style:normal;color:var(--ember)}
 .hero__lead{font-size:var(--fs-lead);color:var(--ash);max-width:46ch;margin:26px 0 0}
@@ -74,19 +92,19 @@ img{max-width:100%;display:block}
   font:500 16px/1.5 var(--body);color:var(--neon);max-width:44ch}
 .hero__blunt b{color:var(--ember);font-weight:600}
 .hero__fine{margin:14px 0 0;font-size:14px;color:var(--ash-dim)}
-.hero__art{justify-self:center;position:relative}
-.hero__art img{position:relative;z-index:1;width:min(100%,580px);
-  filter:drop-shadow(0 0 10px rgba(232,241,248,.28)) drop-shadow(0 0 46px rgba(247,148,35,.30)) drop-shadow(0 0 110px rgba(247,148,35,.16))}
-/* Grounding pool. Tight and low so it sits UNDER the anvil like coals on a floor —
-   testing showed a broad glow behind the mark washes the neon linework out entirely. */
-.hero__art::after{content:"";position:absolute;left:50%;bottom:2%;transform:translateX(-50%);
-  width:74%;height:78px;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse at center,rgba(247,148,35,.34),rgba(247,148,35,.10) 45%,transparent 72%);
-  filter:blur(12px)}
-/* warm floor-light for the whole band, kept far from the mark */
-.hero::after{content:"";position:absolute;left:50%;bottom:-320px;width:1100px;height:460px;
-  transform:translateX(-50%);pointer-events:none;
-  background:radial-gradient(closest-side,rgba(247,148,35,.20),transparent 72%)}
+/* ═══ the mark ═══
+   The halo sits DIRECTLY BEHIND the anvil. Its strength is one knob: set
+   --anvil-glow to 0 to remove it entirely (e.g. when a real hero image goes in
+   behind and supplies its own light). */
+.hero__art{justify-self:center;position:relative;--anvil-glow:.30}
+.hero__art::before{content:"";position:absolute;left:50%;top:48%;translate:-50% -50%;
+  width:104%;aspect-ratio:1/1;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(closest-side,
+    rgba(247,148,35,var(--anvil-glow)),
+    rgba(247,148,35,calc(var(--anvil-glow) * .34)) 52%,
+    transparent 74%)}
+.hero__art img{position:relative;z-index:1;width:min(100%,620px);
+  filter:drop-shadow(0 0 10px rgba(232,241,248,.26)) drop-shadow(0 0 40px rgba(247,148,35,.22))}
 
 /* ═══ generic section ═══ */
 .band{padding:clamp(72px,10vw,124px) 0;border-bottom:1px solid var(--edge)}
@@ -151,6 +169,7 @@ img{max-width:100%;display:block}
 </nav>
 
 <header class="hero">
+  <div class="hero__bg"></div>
   <div class="wrap hero__in">
     <div>
       <p class="eyebrow">Sell before you build</p>
