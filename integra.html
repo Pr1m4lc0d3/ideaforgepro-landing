@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What INTEGRA means — Idea Forge Pro</title>
+<meta name="description" content="INTEGRA is the governance protocol Idea Forge Pro runs under. A confident claim with no source is caught before it reaches you and sent back to be hedged, cited, or retracted — and if it survives a second pass, you see it flagged.">
+<meta name="theme-color" content="#08090C">
+<link rel="icon" href="/assets/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/assets/icon-180.png">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ideaforgepro.com/integra.html">
+<meta property="og:site_name" content="Idea Forge Pro">
+<meta property="og:title" content="What INTEGRA means">
+<meta property="og:description" content="A governance protocol is only worth anything if you can check it. Here is the one mechanism it enforces, and how to catch it lying.">
+<meta property="og:image" content="https://ideaforgepro.com/og-image.png?4">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══ tokens ═══
+   DUPLICATED from index.html. Known, bounded debt: two pages, one copy each.
+   The moment a THIRD page appears, lift tokens + nav + footer + buttons into
+   assets/site.css and have every page link it. Two copies is cheaper than a
+   refactor of a live page; three copies is how palettes drift. */
+:root{
+  --pitch:#08090C; --iron:#101319; --raise:#161A22; --edge:#212734; --edge-2:#2E3747;
+  --neon:#E8F1F8; --ash:#8A97A8; --ash-dim:#5D6979;
+  --ember:#F79423; --gold:#FFD23F; --cold:#6B7686;
+  --display:"Big Shoulders Display","Haettenschweiler","Arial Narrow",sans-serif;
+  --body:"Archivo",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --wrap:1160px; --gut:28px;
+  --fs-h1:clamp(44px,7vw,86px); --fs-h2:clamp(28px,4vw,42px); --fs-lead:clamp(17px,2vw,21px);
+}
+*{box-sizing:border-box}
+html{background:var(--pitch);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--pitch);color:var(--neon);font:400 17px/1.65 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--ember);margin:0 0 18px}
+.disp{font-family:var(--display);font-weight:800;line-height:.94;letter-spacing:-.01em;text-transform:uppercase}
+:focus-visible{outline:2px solid var(--ember);outline-offset:4px}
+
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 16px/1 var(--body);
+  padding:16px 26px;border:1px solid transparent;cursor:pointer;transition:background .16s,border-color .16s,color .16s}
+.btn--go{background:var(--ember);color:#150A00}
+.btn--go:hover{background:var(--gold)}
+.btn--sm{padding:11px 18px;font-size:14px}
+
+.nav{position:sticky;top:0;z-index:20;background:rgba(8,9,12,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--edge)}
+.nav__in{display:flex;align-items:center;justify-content:space-between;height:70px}
+.brand{display:flex;align-items:center;gap:11px}
+.brand img{height:44px;width:auto;display:block;position:relative;top:-1px;
+  filter:drop-shadow(0 0 9px rgba(247,148,35,.55))}
+.brand span{font-family:var(--display);font-weight:800;font-size:24px;line-height:1;letter-spacing:.02em;text-transform:uppercase}
+
+/* ═══ page head ═══ */
+.top{border-bottom:1px solid var(--edge);padding:clamp(48px,7vw,86px) 0 clamp(44px,6vw,72px)}
+.top h1{font-size:var(--fs-h1);margin:0;max-width:14ch}
+.top h1 em{font-style:normal;color:var(--ember)}
+/* Sits after the commitments, not before them. 300px keeps the plate's
+   "POWERED BY" line above its ~238px legibility floor with margin. */
+.earned{margin:40px 0 0;padding:26px 0 0;border-top:1px solid var(--edge);
+  display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+/* height:auto is NOT optional here. The img carries height="142" as an HTML
+   attribute; setting CSS width alone leaves that attribute in force and the
+   badge renders 2x too tall. Larger than the landing-page mention too — this
+   page is where the mark is the payoff, and the row has the room. */
+.stamp{width:min(100%,380px);height:auto;flex:0 0 auto}
+.earned p{margin:0;flex:1 1 300px;font-size:15.5px;color:var(--ash-dim);max-width:46ch}
+.expand{margin:26px 0 0;font:400 var(--fs-lead)/1.6 var(--body);color:var(--ash);max-width:54ch}
+.expand b{color:var(--neon);font-weight:600}
+.back{display:inline-block;margin:34px 0 0;font-size:15px;color:var(--ash);
+  border-bottom:1px solid var(--edge-2);padding-bottom:2px}
+.back:hover{color:var(--ember);border-color:var(--ember)}
+
+/* ═══ sections ═══ */
+.band{border-bottom:1px solid var(--edge);padding:clamp(48px,6vw,80px) 0}
+.band h2{font-size:var(--fs-h2);margin:0;max-width:20ch}
+.band__lead{font-size:17px;color:var(--ash);max-width:62ch;margin:20px 0 0}
+
+/* Each commitment is paired with the way you'd catch it lying. Even steps only —
+   THREE items, so the column count goes 3 → 1 and never 2, which would orphan
+   the third onto its own row (see index.html .honest for the same rule). */
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:44px 0 0;
+  background:var(--edge);border:1px solid var(--edge)}
+@media (max-width:900px){.rules{grid-template-columns:1fr}}
+.rule{background:var(--iron);padding:28px 26px}
+.rule h3{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:22px;margin:0 0 10px}
+.rule p{margin:0;font-size:15.5px;color:var(--ash)}
+.rule .check{margin:14px 0 0;padding:12px 0 0;border-top:1px solid var(--edge);
+  font-size:14px;color:var(--ash-dim)}
+.rule .check b{color:var(--cold);font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;font-size:11px;display:block;margin:0 0 5px}
+
+.nots{margin:40px 0 0;display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge)}
+.not{background:var(--iron);padding:22px 26px;display:grid;grid-template-columns:26px 1fr;gap:16px;align-items:start}
+.not span{color:var(--ember);font-family:var(--mono,var(--body));font-size:20px;line-height:1.1}
+.not p{margin:0;font-size:15.5px;color:var(--ash)}
+.not p b{color:var(--neon);font-weight:600}
+
+.close{padding:clamp(52px,7vw,88px) 0}
+.close h2{font-size:var(--fs-h2);margin:0;max-width:18ch}
+.close p{color:var(--ash);margin:18px 0 0;max-width:52ch}
+.close__cta{margin:34px 0 0}
+
+.foot{border-top:1px solid var(--edge);padding:34px 0;color:var(--ash-dim);font-size:14px}
+.foot__in{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.foot__mark{display:flex;align-items:center;gap:9px;color:var(--ash)}
+.foot__mark img{height:22px;width:auto;opacity:.85}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav__in">
+    <a class="brand" href="/"><img src="/assets/mark.webp" alt="" width="30" height="30"><span>Idea Forge Pro</span></a>
+    <a class="btn btn--go btn--sm" href="https://app.ideaforgepro.com">Forge an idea free</a>
+  </div>
+</nav>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">The protocol behind the mark</p>
+    <h1 class="disp">Governance you can <em>check.</em></h1>
+    <p class="expand"><b>INTEGRA</b> — Integrity Network for Truth-seeking &amp; Ethical Governance in Reasoning Architectures. A constitution loaded into an AI session before any work begins, governing how the model reasons rather than inspecting what it already wrote. Its priority is easy to state and hard to hold to: acknowledge uncertainty instead of smoothing over it.</p>
+    <a class="back" href="/">← Back to Idea Forge Pro</a>
+  </div>
+</header>
+
+<section class="band">
+  <div class="wrap">
+    <p class="eyebrow">What it is</p>
+    <h2 class="disp">A governance protocol, not a filter.</h2>
+    <p class="band__lead">INTEGRA is an ethical-cognitive framework installed at the start of an AI session — the structure the model's reasoning runs through, rather than a screen applied to its output afterwards. Its governing priority is <b>truth as unconcealment</b>: acknowledge uncertainty, reveal what is hidden, admit what stays hidden, and stay vigilant against your own distortion and invention.</p>
+
+    <p class="eyebrow" style="margin-top:52px">What it does here</p>
+    <h2 class="disp">One rule with teeth, and how to catch it lying.</h2>
+    <p class="band__lead">A governance claim nobody can audit is decoration. So here is the mechanism, exactly, and the way you would check it yourself.</p>
+
+    <div class="rules">
+      <div class="rule">
+        <h3>Unsourced claims get sent back</h3>
+        <p>Every response is scanned before it reaches you. A specific factual claim — a percentage, a market size in millions, "research shows…", "according to…", "it is proven that…" — asserted with <em>no</em> hedging and <em>no</em> stated basis is a hard violation.</p>
+        <p class="check"><b>How to check</b>Ask it for a market size. If a hard number comes back, it should be hedged or attributed. A bare "the market is 4.2 million firms" is the exact shape the check exists to stop.</p>
+      </div>
+      <div class="rule">
+        <h3>The violation forces a rewrite</h3>
+        <p>A caught response is not edited or annotated — it goes back to the model with the offending sentence quoted and an instruction to hedge it, cite it, or retract it, then return the whole answer again. You see the rewrite, not the original.</p>
+        <p class="check"><b>How to check</b>Watch the status line while a forge runs. When the check fires, it says so before the second pass.</p>
+      </div>
+      <div class="rule">
+        <h3>A second failure is shown, not swallowed</h3>
+        <p>If the rewrite still asserts the claim, the tool stops trying and surfaces it: the response arrives with the unverified claim named at the top. Quietly passing it on after two attempts would be the more comfortable option and the dishonest one.</p>
+        <p class="check"><b>How to check</b>An uncorrected claim appears as a warning line above the result, quoting the sentence.</p>
+      </div>
+    </div>
+    <!-- The mark goes HERE and nowhere earlier. A reader who has just read the
+         checkable mechanism can read a badge as shorthand for it. The same badge
+         above the headline would assert authority to someone not yet given a
+         reason — the fake-seal failure. -->
+    <div class="earned">
+      <img class="stamp" src="/assets/integra-badge.webp" alt="Powered by INTEGRA" width="640" height="142">
+      <p>That is all the mark claims. It is shorthand for those three things, nothing more.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <p class="eyebrow">Boundaries</p>
+    <h2 class="disp">What INTEGRA is not.</h2>
+    <p class="band__lead">The fastest way for a trust mark to become worthless is to claim more ground than it holds. So, plainly:</p>
+    <div class="nots">
+      <div class="not"><span>—</span><p><b>Not a certification.</b> Nobody audited this and nobody accredited it. It is our own protocol, applied to our own product. Treat it as a promise we can be held to, not a seal somebody issued us.</p></div>
+      <div class="not"><span>—</span><p><b>Not a guarantee the answers are right.</b> It governs how uncertainty is handled, not whether the model is correct. It reduces the risk of confident invention; it does not remove it. Everything it produces remains yours to review before you rely on it.</p></div>
+      <div class="not"><span>—</span><p><b>Not the reason your data stays private.</b> Nothing reaches our servers because the tool is a static page running on your own API key — that is architecture, not ethics. Worth having, but it is not INTEGRA.</p></div>
+      <div class="not"><span>—</span><p><b>Not a stamp on your document.</b> Your Sell-Kit carries a disclosure, never our branding. Marking individual outputs as approved would be exactly the kind of unearned authority this protocol exists to refuse.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="close">
+  <div class="wrap">
+    <p class="eyebrow">Try it</p>
+    <h2 class="disp">See it work on your own idea.</h2>
+    <p>Free, in your browser, on your own API key.</p>
+    <div class="close__cta"><a class="btn btn--go" href="https://app.ideaforgepro.com">Forge an idea free</a></div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <span class="foot__mark"><img src="/assets/mark.webp" alt="" width="22" height="22"> Idea Forge Pro</span>
+    <span>Powered by INTEGRA</span>
+    <span>© 2026 ideaforgepro.com</span>
+  </div>
+</footer>
+
+</body>
+</html>

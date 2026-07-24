@@ -59,7 +59,7 @@ img{max-width:100%;display:block}
 
 /* ═══ nav ═══ */
 .nav{position:sticky;top:0;z-index:20;background:rgba(8,9,12,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--edge)}
-.nav__in{display:flex;align-items:center;justify-content:space-between;height:70px}
+.nav__in{display:flex;align-items:center;justify-content:space-between;height:58px}
 .brand{display:flex;align-items:center;gap:11px}
 .brand img{height:44px;width:auto;display:block;position:relative;top:-1px;
   filter:drop-shadow(0 0 9px rgba(247,148,35,.55))}
@@ -69,7 +69,7 @@ img{max-width:100%;display:block}
 .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--edge)}
 .hero__in{position:relative;z-index:1;
   display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:center;
-  padding:clamp(56px,9vw,110px) 0 clamp(64px,10vw,120px)}
+  padding:clamp(20px,3vw,36px) 0 clamp(48px,7vw,76px)}
 
 /* ╔═══════════════════════════════════════════════════════════════════════╗
    ║  HERO BACKDROP — THE ONE SWAPPABLE LAYER                              ║
@@ -102,9 +102,9 @@ img{max-width:100%;display:block}
 .hero h1{font-size:var(--fs-h1);margin:0;max-width:12ch}
 .hero h1 em{font-style:normal;color:var(--ember)}
 .hero__lead{font-size:var(--fs-lead);color:var(--ash);max-width:46ch;margin:26px 0 0}
-.hero__cta{display:flex;gap:14px;flex-wrap:wrap;margin:36px 0 0}
+.hero__cta{display:flex;gap:14px;flex-wrap:wrap;margin:28px 0 0}
 /* the trust moment — the one thing no competitor will say */
-.hero__blunt{margin:32px 0 0;padding:16px 0 0;border-top:1px solid var(--edge);
+.hero__blunt{margin:24px 0 0;padding:16px 0 0;border-top:1px solid var(--edge);
   font:500 16px/1.5 var(--body);color:var(--neon);max-width:44ch}
 .hero__blunt b{color:var(--ember);font-weight:600}
 .hero__fine{margin:14px 0 0;font-size:14px;color:var(--ash-dim)}
@@ -146,14 +146,62 @@ img{max-width:100%;display:block}
 .gates__foot{margin:22px 0 0;font-size:15px;color:var(--ash-dim)}
 
 /* ═══ the deliverable ═══ */
-.kit{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:1px;
+/* Same even-step rule as .honest — 4 items must never break 3+1. The hairline
+   gap makes an orphan worse here: it leaves a half-drawn grid. */
+.kit{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
   margin:52px 0 0;background:var(--edge);border:1px solid var(--edge)}
+@media (max-width:1040px){.kit{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.kit{grid-template-columns:1fr}}
 .kit__i{background:var(--iron);padding:28px 24px}
 .kit__i h3{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:21px;margin:0 0 9px}
 .kit__i p{margin:0;font-size:15.5px;color:var(--ash)}
 
 /* ═══ honesty ═══ */
-.honest{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:34px;margin:52px 0 0}
+/* Explicit even steps — 4, then 2, then 1. `auto-fit` chose 3 columns for these
+   4 cards and orphaned the fourth on its own row, the same defect that sank the
+   Airo build's gate cards. auto-fit orphans at ANY width where the column count
+   doesn't divide the item count, so the count has to be stated, not derived. */
+.honest{display:grid;grid-template-columns:repeat(4,1fr);gap:34px;margin:52px 0 0}
+@media (max-width:1040px){.honest{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.honest{grid-template-columns:1fr}}
+/* The credential lands AFTER the four behaviours, never before them: nobody has
+   heard of INTEGRA, so a badge up front reads as a fake authority seal. It is
+   the name given to behaviour already demonstrated. */
+/* The block's own top rule and the section's bottom rule bracket this row.
+   Matching padding on each side (its own top, the section's bottom via
+   band--tail) centres the text+button between them instead of stranding them
+   against the top rule with the section's whole bottom pad empty below. */
+.integra{margin:44px 0 0;padding:56px 0 0;border-top:1px solid var(--edge);
+  display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
+.band--tail{padding-bottom:56px}
+/* flex:0 1 — the text sizes to its content instead of growing to fill the row,
+   so the text+button group sits centered rather than pinned to the edges. */
+.integra p{margin:0;flex:0 1 440px;font:400 16px/1.6 var(--body);color:var(--ash)}
+.integra p b{color:var(--neon);font-weight:600;letter-spacing:.03em}
+/* The stamp is a link, so it has to LOOK actionable — the bare plate read as
+   decoration. A framed hit-area + an explicit caption row carry the affordance;
+   the plate alone can't. 340px (was 248): the row has the room and the mark is
+   the point of this block, not a footnote. */
+.integra__stamp{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:9px;
+  width:340px;padding:16px 16px 13px;border:1px solid var(--edge-2);border-radius:10px;
+  background:rgba(22,26,34,.4);text-decoration:none;
+  animation:integraPulse 3.4s ease-in-out infinite;
+  transition:border-color .16s ease,background .16s ease,transform .16s ease,box-shadow .16s ease}
+/* Slow ember breathe so the eye catches it as interactive without it nagging.
+   Hover overrides the animated shadow with a stronger steady one. */
+@keyframes integraPulse{
+  0%,100%{box-shadow:0 0 0 rgba(247,148,35,0)}
+  50%{box-shadow:0 0 22px rgba(247,148,35,.28)}}
+.integra__stamp:hover,.integra__stamp:focus-visible{border-color:var(--ember);
+  background:rgba(22,26,34,.7);transform:translateY(-2px);
+  animation:none;box-shadow:0 0 26px rgba(247,148,35,.42)}
+.integra__stamp img{width:100%;height:auto;display:block}
+.integra__cta{font:600 13px/1 var(--body);letter-spacing:.02em;color:var(--ash);
+  display:inline-flex;align-items:center;gap:6px}
+.integra__stamp:hover .integra__cta,.integra__stamp:focus-visible .integra__cta{color:var(--ember)}
+.integra__cta .arw{transition:transform .16s ease}
+.integra__stamp:hover .integra__cta .arw{transform:translateX(3px)}
+@media (max-width:560px){.integra__stamp{width:100%;max-width:320px}}
 .honest__i{border-left:2px solid var(--ember);padding:2px 0 2px 20px}
 .honest__i h3{font:600 16.5px/1.4 var(--body);margin:0 0 7px;color:var(--neon)}
 .honest__i p{margin:0;font-size:15.5px;color:var(--ash)}
@@ -168,6 +216,10 @@ img{max-width:100%;display:block}
 .foot__in{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
 .foot__mark{display:flex;align-items:center;gap:9px;color:var(--ash)}
 .foot__mark img{height:22px;width:auto;opacity:.85}
+/* The footer mark was already making this claim before anything backed it —
+   now it is a claim you can click and check. */
+.foot__integra{border-bottom:1px solid var(--edge-2);padding-bottom:1px}
+.foot__integra:hover{color:var(--ember);border-color:var(--ember)}
 
 @media (max-width:900px){
   .hero__in{grid-template-columns:1fr;gap:8px}
@@ -231,7 +283,7 @@ img{max-width:100%;display:block}
     <div class="gates">
       <div class="gate" style="--heat:#FFF6E0">
         <div class="gate__n">01</div>
-        <div><h3>Buyer</h3><p>A nameable, reachable person who has already paid for something like this. Not a market, not a demographic — a person.</p></div>
+        <div><h3>Buyer</h3><p>A nameable, reachable person who has already paid for something like this. Not a market — a person.</p></div>
       </div>
       <div class="gate" style="--heat:#FFD23F">
         <div class="gate__n">02</div>
@@ -258,7 +310,7 @@ img{max-width:100%;display:block}
         <div><h3>Builder spec</h3><p>Only now: the minimum build that delivers the promise. Cold, hard, and ready to hand to whoever writes it.</p></div>
       </div>
     </div>
-    <p class="gates__foot">The colour is the point — an idea enters white-hot and leaves as cold iron.</p>
+    <p class="gates__foot">The colour does the talking — an idea enters white-hot and leaves as cold iron.</p>
   </div>
 </section>
 
@@ -266,7 +318,7 @@ img{max-width:100%;display:block}
   <div class="wrap">
     <p class="eyebrow">What you walk away with</p>
     <h2 class="disp">A Sell-Kit you can act on today.</h2>
-    <p class="band__lead">Not a score, not a report card. A working document — plain markdown, so it travels — that you can hand to a co-founder, an investor, a business-planning team, or the developer who is going to build it.</p>
+    <p class="band__lead">A working document, not a report card. It's plain markdown, so it travels — you can hand it to a co-founder, an investor, a business-planning team, or the developer who is going to build it.</p>
     <div class="kit">
       <div class="kit__i"><h3>Deal memo</h3><p>One page: buyer, problem, why now, offer, price, channel. The whole idea, defensible, on a single screen.</p></div>
       <div class="kit__i"><h3>Validation plan</h3><p>The exact test to run, with the pass line and the kill line set before you start — so the result isn't up for debate.</p></div>
@@ -276,16 +328,23 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<section class="band">
+<section class="band band--tail">
   <div class="wrap">
     <p class="eyebrow">How it stays honest</p>
     <h2 class="disp">It marks what it cannot prove.</h2>
     <p class="band__lead">Confident AI that invents numbers is worse than no AI at all — especially in a document you are about to send to someone who matters. So this one shows its work.</p>
     <div class="honest">
-      <div class="honest__i"><h3>It flags unsourced claims</h3><p>Anything it could not source is marked as such, so a made-up figure never travels into your pitch wearing a straight face.</p></div>
+      <div class="honest__i"><h3>It sends unsourced claims back</h3><p>A hard number with nothing behind it — a market size, a percentage, a "research shows" — is caught before it reaches you and returned to the model to hedge, cite, or retract. Survive a second pass and you see it flagged.</p></div>
       <div class="honest__i"><h3>It will fail your idea</h3><p>Gates come back weak or dead with a reason. Flattery here would cost you months, so you won't get any.</p></div>
       <div class="honest__i"><h3>It never sees your data</h3><p>Your idea and your API key stay in your browser and go straight to your provider. No account, nothing on our servers.</p></div>
-      <div class="honest__i"><h3>It separates proof from guesswork</h3><p>What you proved, what you asserted, and what the model estimated are three different things — and stay labelled that way.</p></div>
+      <div class="honest__i"><h3>It separates proof from guesswork</h3><p>Every claim carries its support — <b>proved</b>, <b>asserted</b>, or <b>estimated</b>. The marks live inside the document and survive export, print, and re-import.</p></div>
+    </div>
+    <div class="integra">
+      <p>The first of those is <b>INTEGRA</b> — the governance protocol this tool runs under, and the one of the four it is actually responsible for. The others are how Idea Forge Pro is built. There is no switch to turn it off, because a layer you can disable isn't one.</p>
+      <a class="integra__stamp" href="/integra.html">
+        <img src="/assets/integra-badge.webp" alt="Powered by INTEGRA" width="640" height="142">
+        <span class="integra__cta">What this means <span class="arw">&rarr;</span></span>
+      </a>
     </div>
   </div>
 </section>
@@ -302,7 +361,7 @@ img{max-width:100%;display:block}
 <footer class="foot">
   <div class="wrap foot__in">
     <span class="foot__mark"><img src="/assets/mark.webp" alt="" width="22" height="22"> Idea Forge Pro</span>
-    <span>Powered by INTEGRA</span>
+    <a class="foot__integra" href="/integra.html">Powered by INTEGRA</a>
     <span>© 2026 ideaforgepro.com</span>
   </div>
 </footer>
