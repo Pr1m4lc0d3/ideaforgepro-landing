@@ -120,7 +120,10 @@ img{max-width:100%;display:block}
     rgba(247,148,35,var(--anvil-glow)),
     rgba(247,148,35,calc(var(--anvil-glow) * .34)) 52%,
     transparent 74%)}
-.hero__art img{position:relative;z-index:1;width:min(100%,380px);
+/* The mark is PORTRAIT (667x883). Cap it by HEIGHT, not width, so it sits balanced
+   against the headline and never runs past the fold on short laptop viewports —
+   width-capping a tall image made the hero overflow. */
+.hero__art img{position:relative;z-index:1;width:auto;max-width:100%;max-height:clamp(260px,38vh,360px);
   filter:drop-shadow(0 0 10px rgba(232,241,248,.26)) drop-shadow(0 0 40px rgba(247,148,35,.22))}
 
 /* ═══ generic section ═══ */
