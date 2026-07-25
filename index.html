@@ -159,6 +159,24 @@ img{max-width:100%;display:block}
 .kit__i h3{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:21px;margin:0 0 9px}
 .kit__i p{margin:0;font-size:15.5px;color:var(--ash)}
 
+/* ═══ meet the experts ═══
+   The four personas that voice the critique. Shown as a gallery so the "these are
+   real agents from a real product" story is visible before it is read. Even steps:
+   4 → 2 → 1, never an orphan (same rule as .honest / .kit). */
+.experts{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:52px 0 0}
+@media (max-width:1040px){.experts{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.experts{grid-template-columns:1fr;max-width:340px;margin-inline:auto}}
+.expert{background:var(--iron);border:1px solid var(--edge);border-radius:12px;
+  padding:24px 20px 26px;text-align:center}
+.expert img{width:132px;height:132px;border-radius:10px;object-fit:cover;margin:0 auto 16px;
+  border:1px solid var(--edge-2);box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.expert__tag{font:600 11px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--ember);margin:0 0 7px}
+.expert h3{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:22px;margin:0 0 10px;color:var(--neon)}
+.expert p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ash)}
+.experts__foot{margin:40px 0 0;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
+.experts__foot p{margin:0;color:var(--ash);font-size:15.5px}
+.experts__foot b{color:var(--neon);font-weight:600}
+
 /* ═══ honesty ═══ */
 /* Explicit even steps — 4, then 2, then 1. `auto-fit` chose 3 columns for these
    4 cards and orphaned the fourth on its own row, the same defect that sank the
@@ -327,6 +345,44 @@ img{max-width:100%;display:block}
       <div class="kit__i"><h3>Validation plan</h3><p>The exact test to run, with the pass line and the kill line set before you start — so the result isn't up for debate.</p></div>
       <div class="kit__i"><h3>Value artifact</h3><p>The thing you give away to prove the value before you have a product to sell.</p></div>
       <div class="kit__i"><h3>Builder spec</h3><p>Acceptance criteria, what must be nailed, and what is explicitly out of scope for v1.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <p class="eyebrow">Who forges it</p>
+    <h2 class="disp">Four minds work your idea over.</h2>
+    <p class="band__lead">The critique isn't one voice hedging its bets. It's a small council — each an AI agent with one job and a reason to disagree with the others, <b>designed in Deliberon</b>, the council engine this whole tool grew out of.</p>
+    <div class="experts">
+      <article class="expert">
+        <img src="/assets/face-bull.webp" alt="The Bull" width="132" height="132" loading="lazy">
+        <p class="expert__tag">The Steelman</p>
+        <h3>The Bull</h3>
+        <p>Builds the strongest version of your idea first — so what gets attacked is the real thing, not a strawman.</p>
+      </article>
+      <article class="expert">
+        <img src="/assets/face-short.webp" alt="The Short Seller" width="132" height="132" loading="lazy">
+        <p class="expert__tag">The Adversary</p>
+        <h3>The Short Seller</h3>
+        <p>Attacks it like money is on the line. Demands falsifiable claims and names exactly how it fails.</p>
+      </article>
+      <article class="expert">
+        <img src="/assets/face-closer.webp" alt="The Closer" width="132" height="132" loading="lazy">
+        <p class="expert__tag">The Closer</p>
+        <h3>The Closer</h3>
+        <p>Refuses to speculate. Wants a named buyer and a signed intent-to-purchase before the idea moves an inch.</p>
+      </article>
+      <article class="expert">
+        <img src="/assets/face-prospector.webp" alt="The Prospector" width="132" height="132" loading="lazy">
+        <p class="expert__tag">The Scout</p>
+        <h3>The Prospector</h3>
+        <p>Digs past the obvious to find a specific, overlooked problem worth solving. It's what the Spark button runs on.</p>
+      </article>
+    </div>
+    <div class="experts__foot">
+      <p>Every one was built in <b>Deliberon's Agent Designer</b> — given a mind, a mandate, and a temperament.</p>
+      <a class="btn btn--quiet btn--sm" href="/personas.html">Meet the experts &rarr;</a>
     </div>
   </div>
 </section>
