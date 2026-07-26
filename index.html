@@ -173,9 +173,10 @@ img{max-width:100%;display:block}
    The four personas that voice the critique. Shown as a gallery so the "these are
    real agents from a real product" story is visible before it is read. Even steps:
    4 → 2 → 1, never an orphan (same rule as .honest / .kit). */
-.experts{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:52px 0 0}
-@media (max-width:1040px){.experts{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:520px){.experts{grid-template-columns:1fr;max-width:340px;margin-inline:auto}}
+.experts{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;margin:52px 0 0}
+@media (max-width:1040px){.experts{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){.experts{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:420px){.experts{grid-template-columns:1fr;max-width:340px;margin-inline:auto}}
 .expert{background:var(--iron);border:1px solid var(--edge);border-radius:12px;
   padding:24px 20px 26px;text-align:center}
 .expert img{width:132px;height:132px;border-radius:10px;object-fit:cover;margin:0 auto 16px;
@@ -363,8 +364,8 @@ img{max-width:100%;display:block}
 <section class="band">
   <div class="wrap">
     <p class="eyebrow">Who forges it</p>
-    <h2 class="disp">Four minds work your idea over.</h2>
-    <p class="band__lead">The critique isn't one voice hedging its bets. It's a small council — each an AI agent with one job and a reason to disagree with the others, <b>designed in Deliberon</b>, the council engine this whole tool grew out of.</p>
+    <h2 class="disp">Five minds work your idea over.</h2>
+    <p class="band__lead">The critique isn't one voice hedging its bets — it's a small council, each an AI agent with one job and a reason to disagree with the others. And when they find the cracks, <b>the Smith</b> helps you hammer past them. Every one <b>designed in Deliberon</b>, the council engine this whole tool grew out of.</p>
     <div class="experts">
       <article class="expert">
         <img src="/assets/face-bull.webp" alt="The Bull" width="132" height="132" loading="lazy">
@@ -382,13 +383,19 @@ img{max-width:100%;display:block}
         <img src="/assets/face-closer.webp" alt="The Closer" width="132" height="132" loading="lazy">
         <p class="expert__tag">The Closer</p>
         <h3>The Closer</h3>
-        <p>Refuses to speculate. Wants a named buyer and a signed intent-to-purchase before the idea moves an inch.</p>
+        <p>Refuses to speculate. Wants a specific, reachable buyer and a real money-on-the-table test — not politeness — before the idea earns a yes.</p>
       </article>
       <article class="expert">
         <img src="/assets/face-prospector.webp" alt="The Prospector" width="132" height="132" loading="lazy">
         <p class="expert__tag">The Scout</p>
         <h3>The Prospector</h3>
         <p>Digs past the obvious to find a specific, overlooked problem worth solving. It's what the Spark button runs on.</p>
+      </article>
+      <article class="expert">
+        <img src="/assets/face-smith.webp" alt="The Smith" width="132" height="132" loading="lazy">
+        <p class="expert__tag">The Companion</p>
+        <h3>The Smith</h3>
+        <p>Your partner at the anvil. When a gate needs work, he brainstorms novel, sellable angles to get it past what the council found. He builds with you — he never judges.</p>
       </article>
     </div>
     <div class="experts__foot">
