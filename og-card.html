@@ -6,45 +6,61 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Archivo:wght@500;600&display=swap" rel="stylesheet">
 <style>
+  /* ═══════════════════════════════════════════════════════════════════════════
+     The share card. Rendered to landing/og-image.png at 1200×630.
+
+     It is deliberately the HERO BAND, not a poster invented for social: the same
+     forge-light plate (hero-bg.webp), the same anvil mark, the same Big Shoulders
+     display face, the same ember. Someone who clicks the link should land on a
+     page that looks like the card they just saw.
+
+     Sizes are in vw/vh so the card renders identically at any capture scale.
+     ═══════════════════════════════════════════════════════════════════════════ */
   *{margin:0;box-sizing:border-box}
-  html,body{margin:0}
-  /* Sizes in vw/vh so the card fills the same proportion at any render scale.
-     Palette + type sampled from the live landing (pitch/ember, Big Shoulders). */
+  html,body{margin:0;background:#08090C}
   .card{
     position:fixed;inset:0;overflow:hidden;color:#E8F1F8;
     font-family:"Archivo",system-ui,sans-serif;
+    /* the real hero plate: coal bed and rising sparks low-right, pitch everywhere else.
+       The ember wash on top pulls the glow a little further left so it reaches under the
+       headline instead of pooling in the corner. */
     background:
-      radial-gradient(58vw 64vh at 84% 118%, rgba(247,148,35,.30), transparent 60%),
-      radial-gradient(46vw 50vh at 94% -12%, rgba(255,210,63,.10), transparent 60%),
-      linear-gradient(rgba(120,170,240,.045) 1px,transparent 1px) 0 0/3.4vw 3.4vw,
-      linear-gradient(90deg,rgba(120,170,240,.045) 1px,transparent 1px) 0 0/3.4vw 3.4vw,
+      radial-gradient(52vw 60vh at 78% 112%, rgba(247,148,35,.26), transparent 62%),
+      url("assets/hero-bg.webp") center bottom/cover no-repeat,
       #08090C;
-    padding:5vh 5vw;
+    padding:6.5vh 5vw;
     display:grid;grid-template-rows:auto 1fr auto;
   }
-  .brand{display:flex;align-items:center;gap:1.2vw}
-  .brand img{height:5.4vh;width:auto;filter:drop-shadow(0 0 1.3vh rgba(247,148,35,.55))}
+  /* brand lockup — the mark plus the wordmark, exactly as the site's nav carries it */
+  .brand{display:flex;align-items:center;gap:1.2vw;position:relative;z-index:2}
+  .brand img{height:5.6vh;width:auto;filter:drop-shadow(0 0 1.4vh rgba(247,148,35,.55))}
   .brand span{font-family:"Big Shoulders Display",Haettenschweiler,"Arial Narrow",sans-serif;
     font-weight:800;font-size:3.1vw;line-height:1;letter-spacing:.02em;text-transform:uppercase;color:#E8F1F8}
-  .mid{align-self:center}
-  .eyebrow{font-family:"Archivo",sans-serif;font-weight:600;font-size:1.7vw;letter-spacing:.24em;
+  /* the anvil sits right, as on the hero, lit from the coals below it */
+  .art{position:absolute;right:3.4vw;bottom:7vh;height:72vh;width:auto;z-index:1;
+    filter:drop-shadow(0 0 3.2vh rgba(247,148,35,.42))}
+  .mid{align-self:center;position:relative;z-index:2;max-width:63%}
+  .eyebrow{font-weight:600;font-size:1.7vw;letter-spacing:.24em;
     text-transform:uppercase;color:#F79423;margin-bottom:2.4vh}
   h1{font-family:"Big Shoulders Display",Haettenschweiler,"Arial Narrow",sans-serif;
-    font-weight:800;font-size:9.2vw;line-height:.9;letter-spacing:-.01em;text-transform:uppercase}
+    font-weight:800;font-size:8.2vw;line-height:.88;letter-spacing:-.01em;text-transform:uppercase}
   h1 em{font-style:normal;color:#F79423}
-  .foot{align-self:end;font-family:"Archivo",sans-serif;font-weight:500;font-size:1.8vw;color:#8A97A8}
+  .foot{align-self:end;position:relative;z-index:2;font-weight:500;font-size:1.75vw;color:#8A97A8}
   .foot b{color:#E8F1F8;font-weight:600}
-  .rule{position:absolute;left:0;right:0;bottom:0;height:1.1vh;background:linear-gradient(90deg,#F79423,#FFD23F 40%,#E8F1F8)}
+  /* the molten seam that closes every page of the product */
+  .rule{position:absolute;left:0;right:0;bottom:0;height:1.1vh;
+    background:linear-gradient(90deg,#F79423,#FFD23F 40%,#E8F1F8);z-index:3}
 </style>
 </head>
 <body>
   <div class="card">
+    <img class="art" src="assets/anvil@2x.webp" alt="">
     <div class="brand"><img src="assets/mark.webp" alt=""><span>Idea Forge Pro</span></div>
     <div class="mid">
       <div class="eyebrow">Sell before you build</div>
       <h1>Stop building startups <em>nobody&nbsp;buys.</em></h1>
     </div>
-    <div class="foot">Seven brutal gates · a ruthless AI · free · <b>ideaforgepro.com</b></div>
+    <div class="foot">Seven gates · five minds · free · <b>ideaforgepro.com</b></div>
     <div class="rule"></div>
   </div>
 </body>
