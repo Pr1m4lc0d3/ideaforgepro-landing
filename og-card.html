@@ -37,7 +37,8 @@
   .brand span{font-family:"Big Shoulders Display",Haettenschweiler,"Arial Narrow",sans-serif;
     font-weight:800;font-size:3.1vw;line-height:1;letter-spacing:.02em;text-transform:uppercase;color:#E8F1F8}
   /* the anvil sits right, as on the hero, lit from the coals below it */
-  .art{position:absolute;right:3.4vw;bottom:7vh;height:72vh;width:auto;z-index:1;
+  /* lifted clear of the footer line, which now runs the full width of the card */
+  .art{position:absolute;right:3.4vw;bottom:13vh;height:68vh;width:auto;z-index:1;
     filter:drop-shadow(0 0 3.2vh rgba(247,148,35,.42))}
   .mid{align-self:center;position:relative;z-index:2;max-width:63%}
   .eyebrow{font-weight:600;font-size:1.7vw;letter-spacing:.24em;
@@ -45,7 +46,7 @@
   h1{font-family:"Big Shoulders Display",Haettenschweiler,"Arial Narrow",sans-serif;
     font-weight:800;font-size:8.2vw;line-height:.88;letter-spacing:-.01em;text-transform:uppercase}
   h1 em{font-style:normal;color:#F79423}
-  .foot{align-self:end;position:relative;z-index:2;font-weight:500;font-size:1.75vw;color:#8A97A8}
+  .foot{align-self:end;position:relative;z-index:2;font-weight:500;font-size:1.58vw;color:#8A97A8;white-space:nowrap}
   .foot b{color:#E8F1F8;font-weight:600}
   /* the molten seam that closes every page of the product */
   .rule{position:absolute;left:0;right:0;bottom:0;height:1.1vh;
@@ -60,7 +61,11 @@
       <div class="eyebrow">Sell before you build</div>
       <h1>Stop building startups <em>nobody&nbsp;buys.</em></h1>
     </div>
-    <div class="foot">Seven gates · five minds · free · <b>ideaforgepro.com</b></div>
+    <!-- Numerals, not words, and dot-separated rather than "and" — it has to read at a glance in a
+         feed. The split is the honest one: 3 critics (the Bull, the Short Seller, the Closer) argue
+         the idea down, 2 creative minds (the Smith, the Prospector) build it back up. "A ruthless AI"
+         was singular and wrong. -->
+    <div class="foot">7 brutal gates · 3 ruthless critics · 2 creative minds · free · <b>ideaforgepro.com</b></div>
     <div class="rule"></div>
   </div>
 </body>
