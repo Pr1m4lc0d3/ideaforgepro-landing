@@ -12,20 +12,12 @@
    new CTA to the same place is tracked the moment it ships. */
 
 (function () {
-  var MEASUREMENT_ID = "G-B8QB4L6NH2";
-  // Exact match, not "contains an X" — a real measurement ID may legitimately contain one.
-  if (MEASUREMENT_ID === "G-XXXXXXXXXX") return; // property not created yet
-
-  window.dataLayer = window.dataLayer || [];
-  // gtag.js only honours commands pushed as an `arguments` object, never a plain array.
-  window.gtag = function () { window.dataLayer.push(arguments); };
-  window.gtag("js", new Date());
-  window.gtag("config", MEASUREMENT_ID);
-
-  var s = document.createElement("script");
-  s.async = true;
-  s.src = "https://www.googletagmanager.com/gtag/js?id=" + MEASUREMENT_ID;
-  document.head.appendChild(s);
+  // The gtag loader and `config` call live INLINE in each page's <head>, not here. They used to
+  // be injected from this file, which worked for real visitors but left nothing in the HTML
+  // source — so Google's own tag-detection test reported "code not detected" and blocked setup.
+  // The loader stays inline where any source-scanning checker can see it; this file only adds
+  // the custom events on top.
+  if (typeof window.gtag !== "function") return;
 
   // Which page the click came from — the three "Forge an idea free" CTAs sit in
   // different bands, and knowing which one converts is the point of tracking at all.
