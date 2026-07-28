@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Archivo:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════════════════════════════════════
+     The personas share card. Rendered to landing/og-personas.png at 1200×630.
+
+     personas.html was pointing at the main og-image, so sharing it showed
+     "Stop building startups nobody buys" — a fine card for the product and the
+     wrong one for this page. Someone shares this link to show people the FACES.
+
+     Same plate, same ember, same display face as og-card.html, so the two read
+     as one product. What differs is the subject: the five portraits carry the
+     card, and the copy names the split that the page itself is built around —
+     two build with you, three judge it.
+
+     Sizes in vw/vh so it renders identically at any capture scale.
+     ═══════════════════════════════════════════════════════════════════════════ */
+  *{margin:0;box-sizing:border-box}
+  html,body{margin:0;background:#08090C}
+  .card{
+    position:fixed;inset:0;overflow:hidden;color:#E8F1F8;
+    font-family:"Archivo",system-ui,sans-serif;
+    background:
+      radial-gradient(58vw 66vh at 62% 118%, rgba(247,148,35,.28), transparent 64%),
+      url("assets/hero-bg.webp") center bottom/cover no-repeat,
+      #08090C;
+    padding:6.2vh 5vw;
+    display:grid;grid-template-rows:auto auto 1fr auto;
+  }
+  .brand{display:flex;align-items:center;gap:1.2vw;position:relative;z-index:3}
+  .brand img{height:5.4vh;width:auto;filter:drop-shadow(0 0 1.4vh rgba(247,148,35,.55))}
+  .brand span{font-family:"Big Shoulders Display",Haettenschweiler,"Arial Narrow",sans-serif;
+    font-weight:800;font-size:2.9vw;line-height:1;letter-spacing:.02em;text-transform:uppercase}
+
+  .head{position:relative;z-index:3;margin-top:3.2vh}
+  .eyebrow{font-weight:600;font-size:1.6vw;letter-spacing:.24em;
+    text-transform:uppercase;color:#F79423;margin-bottom:1.8vh}
+  h1{font-family:"Big Shoulders Display",Haettenschweiler,"Arial Narrow",sans-serif;
+    font-weight:800;font-size:6.6vw;line-height:.9;letter-spacing:-.01em;text-transform:uppercase}
+  h1 em{font-style:normal;color:#F79423}
+
+  /* The five, in the order you meet them: the two who build, then the three who judge.
+     A hairline gap and a tint change carry the split without needing a caption on the card. */
+  .row{align-self:center;display:flex;align-items:flex-end;gap:1.5vw;position:relative;z-index:3;margin-top:1vh}
+  .who{display:flex;flex-direction:column;align-items:center;gap:1vh;width:13.6vw}
+  .who img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:.9vh;
+    box-shadow:0 1.4vh 3vh rgba(0,0,0,.62)}
+  .who b{font-family:"Big Shoulders Display",Haettenschweiler,"Arial Narrow",sans-serif;
+    font-weight:700;font-size:1.95vw;line-height:1;text-transform:uppercase;letter-spacing:.01em;
+    white-space:nowrap}
+  .build img{border:.34vh solid rgba(255,210,63,.85)}
+  .build b{color:#FFD23F}
+  .judge img{border:.34vh solid rgba(247,148,35,.72)}
+  .judge b{color:#E8F1F8}
+  /* the seam between the two duties — a thin rule, not a label */
+  .split{width:.22vw;align-self:stretch;margin:2.2vh .7vw 4.4vh;
+    background:linear-gradient(180deg,transparent,rgba(232,241,248,.34),transparent)}
+
+  .foot{align-self:end;position:relative;z-index:3;font-weight:500;font-size:1.5vw;color:#8A97A8;white-space:nowrap}
+  .foot b{color:#E8F1F8;font-weight:600}
+  .rule{position:absolute;left:0;right:0;bottom:0;height:1.1vh;
+    background:linear-gradient(90deg,#F79423,#FFD23F 40%,#E8F1F8);z-index:4}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand"><img src="assets/mark.webp" alt=""><span>Idea Forge Pro</span></div>
+    <div class="head">
+      <div class="eyebrow">Who forges your idea</div>
+      <h1>Meet the five minds <em>of the forge.</em></h1>
+    </div>
+    <div class="row">
+      <div class="who build"><img src="assets/face-prospector.webp" alt=""><b>The Prospector</b></div>
+      <div class="who build"><img src="assets/face-smith.webp" alt=""><b>The Smith</b></div>
+      <div class="split"></div>
+      <div class="who judge"><img src="assets/face-bull.webp" alt=""><b>The Bull</b></div>
+      <div class="who judge"><img src="assets/face-short.webp" alt=""><b>The Short Seller</b></div>
+      <div class="who judge"><img src="assets/face-closer.webp" alt=""><b>The Closer</b></div>
+    </div>
+    <div class="foot">2 build with you · 3 judge it · designed in Deliberon · <b>ideaforgepro.com</b></div>
+    <div class="rule"></div>
+  </div>
+</body>
+</html>
