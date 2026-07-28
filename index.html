@@ -50,7 +50,27 @@
 }
 *{box-sizing:border-box}
 html{background:var(--pitch);-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--pitch);color:var(--neon);font:400 17px/1.65 var(--body);-webkit-font-smoothing:antialiased}
+/* background:transparent is LOAD-BEARING. html already paints --pitch, so body's
+   own background does NOT propagate to the canvas — it paints as a normal opaque
+   layer, and body::before (z-index:-2) sits behind it and never shows. The app has
+   no html{background} rule, which is why the same wallpaper works there untouched.
+   html keeps the black; body gets out of the way so the embers can be seen. */
+body{margin:0;background:transparent;color:var(--neon);font:400 17px/1.65 var(--body);-webkit-font-smoothing:antialiased;
+  position:relative}
+/* ═══ the forge wallpaper ═══════════════════════════════════════════════════
+   The same layer the app runs, so crossing from the landing into the forge is
+   one continuous room rather than two rooms with a door.
+
+   FIXED, not absolute (the app uses absolute because its page is one screen at
+   a time). Fixed is what makes the sparks hold still while the panels ride up
+   over them — the parallax — and it means one viewport of art covers a page of
+   any length instead of being stretched down it.
+
+   z-index:-2 puts it under the hero image (-1), which is under the content. */
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:var(--pitch) url("/assets/forge-paper.webp") top center/100% 100% no-repeat;
+  filter:url(#heat)}
+@media(prefers-reduced-motion:reduce){body::before{filter:none}}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
@@ -104,11 +124,26 @@ img{max-width:100%;display:block}
    ║  horizontally and in the LOWER half, and let the top be expendable.    ║
    ║  Keep it in the RIGHT half too — the left half is the text well.       ║
    ╚═══════════════════════════════════════════════════════════════════════╝ */
+/* FIXED to the viewport so it stays put while the page moves — the plate the
+   solid panels below slide up over and bury. Once buried it is gone for good
+   and the ember wallpaper behind it is what the rest of the page sits on.
+   z-index:-1: above the wallpaper, below every panel. */
+/* THE PARALLAX. position:fixed was wrong — an opaque full-viewport plate that
+   never leaves, so it covered the ember wallpaper at every scroll position and
+   the "open" panels below revealed nothing but hero art.
+   Absolute inside the hero (so it ENDS when the hero does) with the image layer
+   background-attachment:fixed (so it holds still while the hero rides up over
+   it). The gradient scrolls with the element; only the photograph is pinned.
+   iOS Safari ignores fixed attachment and falls back to a normal scroll — the
+   art still reads, it simply does not hold. */
+.hero{overflow:hidden}
 .hero__bg{position:absolute;inset:0;z-index:0;pointer-events:none;
   background:
     linear-gradient(96deg,var(--pitch) 0 20%,rgba(8,9,12,.74) 44%,
       rgba(8,9,12,.34) 68%,rgba(8,9,12,.10) 100%),
-    url("/assets/hero-bg.webp") center bottom/cover no-repeat var(--pitch)}
+    url("/assets/hero-bg.webp") center bottom/cover no-repeat;
+  background-attachment:scroll,fixed;
+  background-color:transparent}
 .hero h1{font-size:var(--fs-h1);margin:0;max-width:12ch}
 .hero h1 em{font-style:normal;color:var(--ember)}
 .hero__lead{font-size:var(--fs-lead);color:var(--ash);max-width:46ch;margin:26px 0 0}
@@ -142,7 +177,18 @@ img{max-width:100%;display:block}
   filter:drop-shadow(0 0 10px rgba(232,241,248,.26)) drop-shadow(0 0 40px rgba(247,148,35,.22))}
 
 /* ═══ generic section ═══ */
-.band{padding:clamp(72px,10vw,124px) 0;border-bottom:1px solid var(--edge)}
+.band{padding:clamp(72px,10vw,124px) 0;border-bottom:1px solid var(--edge);position:relative;z-index:1}
+/* THE PARALLAX. The first panels are SOLID: they ride up over the fixed hero
+   plate and cover it, which is the whole effect — the image does not scroll
+   away, it gets buried. Only once it is buried do we open the panels up and
+   let the ember wallpaper through, so the sparks arrive as a reveal instead of
+   competing with the hero art for the same screen.
+   Two solid panels is the minimum that reads as deliberate; the third is where
+   the heat comes back. */
+.band--solid{background:var(--pitch)}
+/* Translucent, not transparent: the wallpaper should read as atmosphere behind
+   the words, never as texture underneath them. */
+.band--open{background:rgba(8,9,12,.58);backdrop-filter:blur(2px)}
 .band h2{font-size:var(--fs-h2);margin:0;max-width:18ch}
 /* same emphasis pattern as the hero h1: the sentence that carries the edge
    goes ember, so the turn in the line is visible before it is read */
@@ -244,12 +290,37 @@ img{max-width:100%;display:block}
 .honest__i p{margin:0;font-size:15.5px;color:var(--ash)}
 
 /* ═══ close ═══ */
-.close{padding:clamp(84px,12vw,148px) 0;text-align:center}
+.close{padding:clamp(84px,12vw,148px) 0;text-align:center;position:relative;z-index:1;background:rgba(8,9,12,.48)}
 .close h2{font-size:var(--fs-h2);margin:0 auto;max-width:16ch}
 .close p{color:var(--ash);font-size:var(--fs-lead);margin:20px auto 0;max-width:48ch}
 .close__cta{margin:38px 0 0}
 
-.foot{border-top:1px solid var(--edge);padding:34px 0;color:var(--ash-dim);font-size:14px}
+/* ═══ the footer — the same bed of coals that closes the app ════════════════
+   Ported verbatim in behaviour: a bottom-anchored strip of live coals fading in
+   from the dark, the heat rippling off them through the page's own #heat filter
+   so it moves in step with the wallpaper, and a solid black bar under the text
+   so the glow never washes out the words. */
+.forge-foot{position:relative;margin-top:0;z-index:1}
+.forge-foot-seam{height:150px;
+  background:url("/assets/forge-coals.webp") bottom center/cover no-repeat;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.5) 40%,#000 74%);
+  mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.5) 40%,#000 74%);
+  opacity:.95}
+/* The glow lives on the PARENT, not the seam: the seam carries a mask, and a
+   mask applies to its pseudo-elements too — a glow inside it would be erased by
+   the very fade that softens the top edge. On the parent it can also bleed
+   upward past the footer, which is what makes it read as light, not a border. */
+.forge-foot::before{content:"";position:absolute;left:0;right:0;top:-26px;height:88px;z-index:2;
+  pointer-events:none;
+  background:radial-gradient(130% 100% at 50% 100%,
+    rgba(255,168,72,.50), rgba(198,104,38,.26) 46%, rgba(140,66,20,.08) 68%, transparent 80%);
+  filter:blur(12px) url(#heat);
+  animation:coal-breathe 6.5s ease-in-out infinite}
+@keyframes coal-breathe{0%,100%{opacity:.62}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.forge-foot::before{animation:none;opacity:.8;filter:blur(12px)}}
+/* Opaque black under the words — the very bottom of the page is clean. */
+.foot{padding:26px 0 34px;color:var(--ash-dim);font-size:14px;background:var(--pitch);
+  position:relative;z-index:1}
 .foot__in{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
 .foot__mark{display:flex;align-items:center;gap:9px;color:var(--ash)}
 .foot__mark img{height:22px;width:auto;opacity:.85}
@@ -275,6 +346,28 @@ img{max-width:100%;display:block}
 <script src="/assets/analytics.js" defer></script>
 </head>
 <body>
+
+<!-- Heat-haze filter: fractal noise displaces whatever it's applied to, and the animated
+     baseFrequency makes the distortion shimmer like hot air rising. Used on the molten footer seam. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <filter id="heat" x="-20%" y="-30%" width="140%" height="160%" color-interpolation-filters="sRGB">
+    <!-- Broad, soft, low-frequency noise → a mirage, not tight bands. Two motions layered:
+         a slow spline breath on baseFrequency (shimmer) and a gentle vertical drift on the noise
+         (feOffset) so the distortion rises off the seam like hot air instead of pulsing in place. -->
+    <feTurbulence type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="2" seed="4" result="n0">
+      <animate attributeName="baseFrequency" dur="6s" repeatCount="indefinite"
+               calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"
+               values="0.009 0.012;0.011 0.017;0.009 0.012"/>
+    </feTurbulence>
+    <feOffset in="n0" result="n" dy="0">
+      <animate attributeName="dy" dur="3.2s" repeatCount="indefinite"
+               calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"
+               values="10;-10;10"/>
+    </feOffset>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="11" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
 
 <nav class="nav">
   <div class="wrap nav__in">
@@ -307,7 +400,7 @@ img{max-width:100%;display:block}
   </div>
 </header>
 
-<section class="band">
+<section class="band band--solid">
   <div class="wrap">
     <p class="eyebrow">The problem</p>
     <h2 class="disp">Founders build first and find out last.</h2>
@@ -315,7 +408,7 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<section class="band" id="gates">
+<section class="band band--solid" id="gates">
   <div class="wrap">
     <p class="eyebrow">The seven gates</p>
     <!-- nbsp welds "the slag." so the 18ch measure cannot break after the
@@ -357,7 +450,7 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<section class="band">
+<section class="band band--open">
   <div class="wrap">
     <p class="eyebrow">What you walk away with</p>
     <h2 class="disp">A Sell-Kit you can act on today.</h2>
@@ -371,7 +464,7 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<section class="band">
+<section class="band band--open">
   <div class="wrap">
     <p class="eyebrow">Who forges it</p>
     <h2 class="disp">Five minds work your idea over.</h2>
@@ -415,7 +508,7 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
-<section class="band band--tail">
+<section class="band band--open band--tail">
   <div class="wrap">
     <p class="eyebrow">How it stays honest</p>
     <h2 class="disp">It marks what it cannot prove.</h2>
@@ -445,6 +538,7 @@ img{max-width:100%;display:block}
   </div>
 </section>
 
+<div class="forge-foot"><div class="forge-foot-seam"></div></div>
 <footer class="foot">
   <div class="wrap foot__in">
     <span class="foot__mark"><img src="/assets/mark.webp" alt="" width="22" height="22"> Idea Forge Pro</span>
