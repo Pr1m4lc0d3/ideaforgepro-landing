@@ -118,6 +118,11 @@ img{max-width:100%;display:block}
   font:500 16px/1.5 var(--body);color:var(--neon);max-width:44ch}
 .hero__blunt b{color:var(--ember);font-weight:600}
 .hero__fine{margin:14px 0 0;font-size:14px;color:var(--ash-dim)}
+/* The ways in. Sits under the promise line, one step quieter than it, because it answers
+   "what do I actually do first" rather than making a claim. */
+.hero__ways{margin:8px 0 0;font-size:14px;line-height:1.6;color:var(--ash)}
+.hero__ways b{color:var(--ember)}
+.hero__ways-fine{display:block;margin-top:3px;font-size:13px;color:var(--ash-dim)}
 /* ═══ the mark ═══
    The halo sits DIRECTLY BEHIND the anvil. Its strength is one knob.
    Dropped .30 → .14 when the forge plate went in behind: the plate supplies
@@ -291,6 +296,10 @@ img{max-width:100%;display:block}
       </div>
       <p class="hero__blunt">It will tell you when your idea is bad. <b>That's the point.</b></p>
       <p class="hero__fine">Free · runs in your browser · your own API key · nothing reaches our servers</p>
+      <!-- How the idea gets IN. The page described the seven gates and the Sell-Kit at length and
+           never said what you actually do first, which for a founder holding a messy notes file or
+           a half-formed thought is the question that decides whether they start at all. -->
+      <p class="hero__ways">Type it, paste your notes, drop in a <b>.md, .txt or PDF</b> — or just <b>say it out loud</b>. <span class="hero__ways-fine">Dictation uses a free Groq key; everything else runs on any provider.</span></p>
     </div>
     <div class="hero__art">
       <img src="/assets/anvil@2x.webp" alt="A lightbulb whose filament forms a question mark, forged as one continuous line into an anvil" width="667" height="883" fetchpriority="high">
