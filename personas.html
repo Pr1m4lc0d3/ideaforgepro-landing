@@ -32,12 +32,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ═══ tokens ═══
-   THIRD copy of the shared shell (index.html, integra.html, here). The two-copy
-   note on integra.html said the third page should trigger lifting tokens + nav +
-   footer + buttons into assets/site.css. That extraction is now a real follow-up
-   — but the three pages have already drifted (nav height, --fs scale, button
-   variants), so it is its own reconciliation task, not a copy-paste, and is left
-   deliberately out of this feature add. See the note the next time this shell is touched. */
+   The last copy of the shared shell that has not been folded into assets/site.css.
+   index.html, gates.html, sell-kit.html and honest.html all link that stylesheet;
+   this page still carries its own tokens + nav + footer + buttons, and it has
+   drifted (nav height, --fs scale, button variants) — so folding it in is a
+   reconciliation task, not a copy-paste. Do it the next time this shell is touched. */
 :root{
   --pitch:#08090C; --iron:#101319; --raise:#161A22; --edge:#212734; --edge-2:#2E3747;
   --neon:#E8F1F8; --ash:#8A97A8; --ash-dim:#5D6979;
