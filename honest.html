@@ -12,57 +12,75 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>How it stays honest — Idea Forge Pro</title>
-<meta name="description" content="It sends unsourced claims back, it will fail your idea, it never sees your data, and it separates proof from guesswork. The four behaviours, and the INTEGRA protocol behind the first.">
+<title>INTEGRA — how it stays honest | Idea Forge Pro</title>
+<meta name="description" content="INTEGRA is the governance protocol Idea Forge Pro runs under. It marks what it cannot prove, sends unsourced claims back, will fail your idea, and never sees your data — and here is how to catch it lying.">
 <meta name="theme-color" content="#08090C">
 <link rel="icon" href="/assets/favicon.ico?6" sizes="any">
 <link rel="apple-touch-icon" href="/assets/icon-180.png?6">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ideaforgepro.com/honest.html">
 <meta property="og:site_name" content="Idea Forge Pro">
-<meta property="og:title" content="It marks what it cannot prove">
-<meta property="og:description" content="Confident AI that invents numbers is worse than no AI at all. Here is what this one does instead.">
+<meta property="og:title" content="INTEGRA — governance you can check">
+<meta property="og:description" content="A governance claim nobody can audit is decoration. Here is the mechanism, exactly, and the way you would check it yourself.">
 <meta property="og:image" content="https://ideaforgepro.com/og-image.png?7">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="It marks what it cannot prove">
-<meta name="twitter:description" content="Confident AI that invents numbers is worse than no AI at all. Here is what this one does instead.">
+<meta name="twitter:title" content="INTEGRA — governance you can check">
+<meta name="twitter:description" content="A governance claim nobody can audit is decoration. Here is the mechanism, and how to catch it lying.">
 <meta name="twitter:image" content="https://ideaforgepro.com/og-image.png?7">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?1">
 <style>
-/* Explicit even steps — 4, then 2, then 1. auto-fit orphans the fourth card at
-   any width where the column count doesn't divide the item count. */
+/* ═══ the plate, top right ═══════════════════════════════════════════════════
+   This page is the ONE surface where the mark leads. design.md §94 keeps the
+   badge off the LANDING hero — a seal shown to someone with no reason yet reads
+   as a fake authority stamp. A reader is only here because they clicked "how it
+   stays honest", so the mark is a title card, and the mechanism that earns it is
+   two screens below, not withheld. */
+.top__in{display:grid;grid-template-columns:1fr auto;gap:clamp(24px,4vw,56px);align-items:start}
+.plate{width:clamp(260px,26vw,360px);padding:15px 15px 12px;border:1px solid var(--edge-2);
+  border-radius:10px;background:rgba(22,26,34,.45)}
+.plate img{width:100%;height:auto}
+.plate figcaption{margin:9px 0 0;font:600 12px/1.4 var(--body);color:var(--ash);text-align:center}
+@media (max-width:820px){
+  .top__in{grid-template-columns:1fr}
+  .plate{order:-1;width:min(100%,320px)}
+}
+
+/* ═══ the four behaviours ═══ explicit even steps — 4, then 2, then 1. auto-fit
+   orphans the fourth card at any width where the columns don't divide the items. */
 .honest{display:grid;grid-template-columns:repeat(4,1fr);gap:34px}
 @media (max-width:1040px){.honest{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.honest{grid-template-columns:1fr}}
 .honest__i{border-left:2px solid var(--ember);padding:2px 0 2px 20px}
-.honest__i h2{font:600 16.5px/1.4 var(--body);margin:0 0 7px;color:var(--neon)}
+.honest__i h3{font:600 16.5px/1.4 var(--body);margin:0 0 7px;color:var(--neon)}
 .honest__i p{margin:0;font-size:15.5px;color:var(--ash)}
-/* The credential lands AFTER the four behaviours, never before them: nobody has
-   heard of INTEGRA, so a badge up front reads as a fake authority seal. It is
-   the name given to behaviour already demonstrated. */
-.integra{margin:52px 0 0;padding:52px 0 0;border-top:1px solid var(--edge);
-  display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
-.integra p{margin:0;flex:0 1 440px;font:400 16px/1.6 var(--body);color:var(--ash)}
-.integra p b{color:var(--neon);font-weight:600;letter-spacing:.03em}
-/* The stamp is a link, so it has to LOOK actionable — the bare plate read as
-   decoration. A framed hit-area + an explicit caption row carry the affordance. */
-.integra__stamp{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:9px;
-  width:340px;padding:16px 16px 13px;border:1px solid var(--edge-2);border-radius:10px;
-  background:rgba(22,26,34,.4);animation:integraPulse 3.4s ease-in-out infinite;
-  transition:border-color .16s,background .16s,transform .16s,box-shadow .16s}
-@keyframes integraPulse{0%,100%{box-shadow:0 0 0 rgba(247,148,35,0)}
-  50%{box-shadow:0 0 22px rgba(247,148,35,.28)}}
-.integra__stamp:hover,.integra__stamp:focus-visible{border-color:var(--ember);
-  background:rgba(22,26,34,.7);transform:translateY(-2px);
-  animation:none;box-shadow:0 0 26px rgba(247,148,35,.42)}
-.integra__cta{font:600 13px/1 var(--body);color:var(--ash);display:inline-flex;align-items:center;gap:6px}
-.integra__stamp:hover .integra__cta{color:var(--ember)}
-.integra__cta .arw{transition:transform .16s ease}
-.integra__stamp:hover .integra__cta .arw{transform:translateX(3px)}
-@media (max-width:560px){.integra__stamp{width:100%;max-width:320px}}
+
+/* ═══ the mechanism ═══ each rule carries the way to catch it failing. A claim
+   nobody can audit is decoration, so the check ships beside the rule. */
+.sect{margin:clamp(52px,7vw,84px) 0 0}
+.sect h2{font-size:var(--fs-h2);margin:0;max-width:20ch}
+.sect h2 em{font-style:normal;color:var(--ember)}
+.sect__lead{font-size:var(--fs-lead);color:var(--ash);max-width:62ch;margin:18px 0 0}
+.sect__lead b{color:var(--neon);font-weight:600}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin:40px 0 0}
+@media (max-width:900px){.rules{grid-template-columns:1fr}}
+.rule{background:var(--iron);border:1px solid var(--edge);border-radius:12px;padding:24px 22px}
+.rule h3{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:20px;
+  margin:0 0 12px;color:var(--neon)}
+.rule p{margin:0 0 12px;font-size:15px;color:var(--ash)}
+.check{margin:0!important;padding:14px 0 0;border-top:1px solid var(--edge);font-size:14.5px}
+.check b{display:block;font:600 11px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ember);margin:0 0 7px}
+
+/* ═══ boundaries ═══ the fastest way for a trust mark to become worthless is to
+   claim more ground than it holds, so the limits get the same weight as the claims. */
+.nots{margin:36px 0 0;display:grid;gap:18px;max-width:78ch}
+.not{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline}
+.not span{color:var(--ember);font-weight:700}
+.not p{margin:0;font-size:15.5px;color:var(--ash)}
+.not b{color:var(--neon);font-weight:600}
 </style>
 <script src="/assets/analytics.js" defer></script>
 </head>
@@ -76,29 +94,65 @@
 </nav>
 
 <header class="top">
-  <div class="wrap">
-    <p class="eyebrow">How it stays honest</p>
-    <h1 class="disp">It marks what it <em>cannot prove.</em></h1>
-    <p class="expand">Confident AI that invents numbers is worse than no AI at all — especially in a document you are about to send to someone who matters. So this one shows its work.</p>
-    <a class="back" href="/">← Back to Idea Forge Pro</a>
+  <div class="wrap top__in">
+    <div>
+      <p class="eyebrow">How it stays honest</p>
+      <h1 class="disp">The protocol that keeps the council <em>honest.</em></h1>
+      <p class="expand"><b>INTEGRA</b> — Integrity Network for Truth-seeking &amp; Ethical Governance in Reasoning Architectures. A constitution loaded into the session before any of the five minds says a word, governing how they reason rather than inspecting what they already wrote. Its priority is easy to state and hard to hold to: <b>acknowledge uncertainty instead of smoothing over it.</b></p>
+      <p class="expand">There is no switch to turn it off, because a layer you can disable isn't one. What follows is what that buys you, the one mechanism with teeth, and the ground the mark does <em>not</em> cover.</p>
+      <a class="back" href="/">← Back to Idea Forge Pro</a>
+    </div>
+    <figure class="plate">
+      <img src="/assets/integra-badge.webp" alt="Powered by INTEGRA" width="640" height="142">
+      <figcaption>Always on. Never a per-document stamp.</figcaption>
+    </figure>
   </div>
 </header>
 
 <section class="body">
   <div class="wrap">
-    <div class="honest">
-      <div class="honest__i"><h2>It sends unsourced claims back</h2><p>A hard number with nothing behind it — a market size, a percentage, a "research shows" — is caught before it reaches you and returned to the model to hedge, cite, or retract. Survive a second pass and you see it flagged.</p></div>
-      <div class="honest__i"><h2>It will fail your idea</h2><p>Gates come back weak or dead with a reason. Flattery here would cost you months, so you won't get any.</p></div>
-      <div class="honest__i"><h2>It never sees your data</h2><p>Your idea and your API key stay in your browser and go straight to your provider. No account, nothing on our servers. We do count page visits with Google Analytics &mdash; never your idea, never your key.</p></div>
-      <div class="honest__i"><h2>It separates proof from guesswork</h2><p>Every claim carries its support — <b>proved</b>, <b>asserted</b>, or <b>estimated</b>. The marks live inside the document and survive export, print, and re-import.</p></div>
+    <div class="sect" style="margin:0">
+      <h2 class="disp">Four behaviours you can <em>point at.</em></h2>
+      <p class="sect__lead">Confident AI that invents numbers is worse than no AI at all — especially in a document you are about to send to someone who matters. Each of these is checkable in use, which is the only thing that makes the mark worth anything.</p>
+    </div>
+    <div class="honest" style="margin-top:40px">
+      <div class="honest__i"><h3>It sends unsourced claims back</h3><p>A hard number with nothing behind it — a market size, a percentage, a "research shows" — is caught before it reaches you and returned to the model to hedge, cite, or retract. Survive a second pass and you see it flagged.</p></div>
+      <div class="honest__i"><h3>It will fail your idea</h3><p>Gates come back weak or dead with a reason. Flattery here would cost you months, so you won't get any.</p></div>
+      <div class="honest__i"><h3>It never sees your data</h3><p>Your idea and your API key stay in your browser and go straight to your provider. No account, nothing on our servers. We do count page visits with Google Analytics &mdash; never your idea, never your key.</p></div>
+      <div class="honest__i"><h3>It separates proof from guesswork</h3><p>Every claim carries its support — <b>proved</b>, <b>asserted</b>, or <b>estimated</b>. The marks live inside the document and survive export, print, and re-import.</p></div>
     </div>
 
-    <div class="integra">
-      <p>The first of those is <b>INTEGRA</b> — the governance protocol this tool runs under, and the one of the four it is actually responsible for. The others are how Idea Forge Pro is built. There is no switch to turn it off, because a layer you can disable isn't one.</p>
-      <a class="integra__stamp" href="/integra.html">
-        <img src="/assets/integra-badge.webp" alt="Powered by INTEGRA" width="640" height="142">
-        <span class="integra__cta">What this means <span class="arw">&rarr;</span></span>
-      </a>
+    <div class="sect">
+      <h2 class="disp">One rule with teeth, and <em>how to catch it lying.</em></h2>
+      <p class="sect__lead">A governance claim nobody can audit is decoration. So here is the mechanism, exactly, and the way you would check it yourself.</p>
+      <div class="rules">
+        <div class="rule">
+          <h3>Unsourced claims get sent back</h3>
+          <p>Every response is scanned before it reaches you. A specific factual claim — a percentage, a market size in millions, "research shows…", "according to…", "it is proven that…" — asserted with <em>no</em> hedging and <em>no</em> stated basis is a hard violation.</p>
+          <p class="check"><b>How to check</b>Ask it for a market size. If a hard number comes back, it should be hedged or attributed. A bare "the market is 4.2 million firms" is the exact shape the check exists to stop.</p>
+        </div>
+        <div class="rule">
+          <h3>The violation forces a rewrite</h3>
+          <p>A caught response is not edited or annotated — it goes back to the model with the offending sentence quoted and an instruction to hedge it, cite it, or retract it, then return the whole answer again. You see the rewrite, not the original.</p>
+          <p class="check"><b>How to check</b>Watch the status line while a forge runs. When the check fires, it says so before the second pass.</p>
+        </div>
+        <div class="rule">
+          <h3>A second failure is shown, not swallowed</h3>
+          <p>If the rewrite still asserts the claim, the tool stops trying and surfaces it: the response arrives with the unverified claim named at the top. Quietly passing it on after two attempts would be the more comfortable option and the dishonest one.</p>
+          <p class="check"><b>How to check</b>An uncorrected claim appears as a warning line above the result, quoting the sentence.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h2 class="disp">What INTEGRA is <em>not.</em></h2>
+      <p class="sect__lead">The fastest way for a trust mark to become worthless is to claim more ground than it holds. So, plainly:</p>
+      <div class="nots">
+        <div class="not"><span>—</span><p><b>Not a certification.</b> Nobody audited this and nobody accredited it. It is our own protocol, applied to our own product. Treat it as a promise we can be held to, not a seal somebody issued us.</p></div>
+        <div class="not"><span>—</span><p><b>Not a guarantee the answers are right.</b> It governs how uncertainty is handled, not whether the model is correct. It reduces the risk of confident invention; it does not remove it. Everything it produces remains yours to review before you rely on it.</p></div>
+        <div class="not"><span>—</span><p><b>Not the reason your data stays private.</b> Nothing reaches our servers because the tool is a static page running on your own API key — that is architecture, not ethics. Worth having, but it is not INTEGRA.</p></div>
+        <div class="not"><span>—</span><p><b>Not a stamp on your document.</b> Your Sell-Kit carries a disclosure, never our branding. Marking individual outputs as approved would be exactly the kind of unearned authority this protocol exists to refuse.</p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -106,11 +160,11 @@
 <section class="close">
   <div class="wrap">
     <p class="eyebrow">Ten minutes, no product required</p>
-    <h2 class="disp">Find out now, not in six months.</h2>
+    <h2 class="disp">See it work on your own idea.</h2>
     <p>Free, in your browser, on your own key. If the idea is bad, you'll know before lunch.</p>
     <div class="close__cta">
       <a class="btn btn--go" href="https://app.ideaforgepro.com">Enter the forge</a>
-      <a class="btn btn--quiet" href="/personas.html">The five minds that judge it <span class="arw">&rarr;</span></a>
+      <a class="btn btn--quiet" href="/personas.html">The five minds it governs <span class="arw">&rarr;</span></a>
     </div>
   </div>
 </section>
@@ -118,7 +172,7 @@
 <footer class="foot">
   <div class="wrap foot__in">
     <span class="foot__mark"><img src="/assets/mark.webp" alt="" width="22" height="22"> Idea Forge Pro</span>
-    <a class="foot__integra" href="/integra.html">Powered by INTEGRA</a>
+    <span>Powered by INTEGRA</span>
     <span class="foot__ledger">Google Analytics counts visits here and sets a cookie. Your idea and your API key never leave your browser.</span>
     <span>© 2026 ideaforgepro.com</span>
   </div>
