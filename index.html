@@ -39,30 +39,23 @@
 <link rel="stylesheet" href="/assets/site.css?1">
 <style>
 /* ═══════════════════════════════════════════════════════════════════════════
-   THE HOME PAGE IS ONE SURFACE. No scroll, no bands, no manuscript.
+   THE HOME PAGE IS ONE SURFACE. No scroll, no bands, no manuscript. Every
+   explanation lives on its own page (/gates, /personas, /sell-kit, /honest);
+   all that is left here is the claim, the door, and four signposts.
 
-   Everything that used to live down the page now lives on its own page —
-   /gates.html, /personas.html, /sell-kit.html, /honest.html — and the only job
-   left here is: say what this is in one line, put the door to the forge where
-   nobody can miss it, and give four signposts that say where each other page
-   goes and what is behind it.
-
-   HEIGHT IS THE BUDGET. Every vertical measure below is svh- or vw-clamped so
-   the surface compresses instead of overflowing on a short laptop or a phone.
-   100svh (small viewport height) is deliberate: 100vh is the tall-chrome
-   measurement on mobile and would push the doors under the address bar.
+   HEIGHT IS THE BUDGET — every vertical measure is svh- or vw-clamped so the
+   surface compresses instead of overflowing. 100svh not 100vh: 100vh is the
+   tall-chrome measurement and would push the doors under the address bar.
    ═══════════════════════════════════════════════════════════════════════════ */
 body{min-height:100svh;display:flex;flex-direction:column;background:transparent}
 .stage{position:relative;flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;
   gap:clamp(14px,2.4svh,40px);padding:clamp(12px,2svh,32px) 0;overflow:hidden}
-/* LOAD-BEARING. .wrap carries `margin:0 auto`, and an auto margin on the cross
-   axis of a flex item cancels the default stretch — so each child sized itself
-   to its own content and landed on a different left edge. Measured at 1440: the
-   headline sat at x=283 while the signposts sat at x=168. width:100% restores
-   the stretch and puts the claim, the button and the four doors in one gutter. */
+/* LOAD-BEARING. .wrap carries `margin:0 auto`, and an auto CROSS-AXIS margin
+   cancels a flex item's stretch — each child then sized to its own content and
+   landed on a different left edge (measured: headline x=283, signposts x=168). */
 .stage>.wrap{width:100%}
-/* The forge plate, scrimmed left-heavy so the headline keeps a dark well to sit
-   in while the light survives on the right behind the anvil. */
+/* Forge plate, scrimmed left-heavy: a dark well for the headline, light on the
+   right behind the anvil. */
 .stage__bg{position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:
     linear-gradient(96deg,var(--pitch) 0 18%,rgba(8,9,12,.76) 44%,
@@ -77,12 +70,20 @@ body{min-height:100svh;display:flex;flex-direction:column;background:transparent
 .say h1 em{font-style:normal;color:var(--ember)}
 .say__sub{font-size:clamp(15px,1.4vw,18px);color:var(--ash);max-width:44ch;margin:12px 0 0}
 .say__sub b{color:var(--neon);font-weight:600}
-/* ═══ THE CALL TO ACTION ═══ It is the largest interactive thing on the site by
-   a wide margin, in the display face, and it is the only ember-filled control on
-   the surface — every other button here is an outline. Size is the hierarchy. */
-.enter{display:inline-flex;align-items:center;gap:14px;margin:clamp(14px,2.4svh,30px) 0 0;
+/* ═══ THE ACT ═══ the mark and the door, stacked, on the right ════════════════
+   The anvil and the button are ONE object — both exactly as wide as .act, so the
+   pair reads as a single target, not a decoration beside a link. .act's width is
+   driven by viewport HEIGHT: the image is width-bound (no max-height) so its
+   height is width / 0.755, and capping the WIDTH by available height is what
+   lets the anvil be 500px tall without pushing the page into a scroll. */
+.act{justify-self:center;display:flex;flex-direction:column;align-items:center;
+  width:100%;max-width:clamp(240px,42svh,400px)}
+/* ═══ THE CALL TO ACTION ═══ The largest interactive thing on the site by a wide
+   margin, and the only ember-filled control on it. Size is the hierarchy. */
+.enter{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;
+  margin:clamp(10px,1.8svh,22px) 0 0;
   font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.02em;
-  font-size:clamp(24px,2.9vw,40px);line-height:1;padding:clamp(14px,2svh,22px) clamp(24px,3.2vw,46px);
+  font-size:clamp(24px,2.4vw,38px);line-height:1;padding:clamp(15px,2.2svh,24px) clamp(18px,2vw,30px);
   background:var(--ember);color:#150A00;border:1px solid var(--ember);
   box-shadow:0 0 0 rgba(247,148,35,0);animation:enterBreathe 3.6s ease-in-out infinite;
   transition:background .16s,box-shadow .16s,transform .16s}
@@ -92,28 +93,25 @@ body{min-height:100svh;display:flex;flex-direction:column;background:transparent
   animation:none;box-shadow:0 0 38px rgba(247,148,35,.5)}
 .enter .arw{transition:transform .16s ease}
 .enter:hover .arw{transform:translateX(4px)}
-/* No max-width: the say column already caps it, and a ch-based cap orphaned
-   "reaches our servers" onto a second line at every desktop width. */
-.fine{margin:11px 0 0;font-size:13px;color:var(--ash-dim)}
-/* The home footer is the tightest one on the site — every pixel it spends is a
-   pixel the doors don't have. The sub-pages keep the roomier shared version. */
+/* The trust line is the caption ON the control, not a note in the headline
+   column — it does its work at the moment of the click. */
+.fine{margin:10px 0 0;font-size:13px;color:var(--ash-dim);text-align:center}
+/* Tightest footer on the site: its pixels are the doors' pixels. Sub-pages keep
+   the roomier shared version. */
 .foot{padding:clamp(9px,1.6svh,18px) 0;font-size:12.5px}
-
-/* ═══ the mark ═══ capped by HEIGHT so a tall image can never set the page's. */
-.art{justify-self:center;position:relative}
-.art::before{content:"";position:absolute;left:50%;top:48%;translate:-50% -50%;
+/* ═══ the mark ═══ width-bound, so it is as wide as the button beneath it. */
+.mark{position:relative;width:100%;display:flex;justify-content:center}
+.mark::before{content:"";position:absolute;left:50%;top:48%;translate:-50% -50%;
   width:104%;aspect-ratio:1/1;border-radius:50%;pointer-events:none;z-index:0;
-  background:radial-gradient(closest-side,rgba(247,148,35,.14),
-    rgba(247,148,35,.05) 52%,transparent 74%)}
-.art img{position:relative;z-index:1;width:auto;max-width:100%;max-height:clamp(170px,32svh,320px);
+  background:radial-gradient(closest-side,rgba(247,148,35,.16),
+    rgba(247,148,35,.06) 52%,transparent 74%)}
+.mark img{position:relative;z-index:1;width:100%;height:auto;
   filter:drop-shadow(0 0 10px rgba(232,241,248,.26)) drop-shadow(0 0 40px rgba(247,148,35,.22))}
 
-/* ═══ THE FOUR DOORS ═══ Each one is a whole clickable tile: two short lines
-   that say what is behind it, and a button face that says where it goes. The
-   wording and the button are the same control — a reader never has to match a
-   sentence to a link somewhere else on the page.
-   Four explicit columns, then two, then two. Never auto-fit: it orphans the
-   fourth tile at any width where the column count doesn't divide four. */
+/* ═══ THE FOUR DOORS ═══ Each is a whole clickable tile: what is behind it, and
+   a button face saying where it goes — wording and control are the same thing.
+   Explicit column counts, never auto-fit: auto-fit orphans the fourth tile at
+   any width where the column count doesn't divide four. */
 .doors{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,1vw,16px)}
 .doors a{display:flex;flex-direction:column;gap:5px;padding:clamp(11px,1.4vw,18px);
   background:rgba(16,19,25,.72);border:1px solid var(--edge);backdrop-filter:blur(3px);
@@ -129,54 +127,54 @@ body{min-height:100svh;display:flex;flex-direction:column;background:transparent
 
 /* ═══ WIDTH: how the surface reflows ═══ */
 @media (max-width:900px){
-  .stage__in{grid-template-columns:1fr;gap:10px;justify-items:start}
-  .art{grid-row:1;justify-self:start}
-  .art img{max-height:clamp(84px,11svh,120px)}
+  .stage__in{grid-template-columns:1fr;gap:clamp(8px,1.6svh,16px);justify-items:stretch}
   .doors{grid-template-columns:repeat(2,1fr)}
   .say h1{max-width:none}
-  /* Stacked, the anvil sits directly above the brand row — and the brand row's
-     own icon is the SAME anvil. Two of them in a column reads as a rendering
-     fault, so the small one goes and the wordmark stands alone under the art. */
-  .brand img{display:none}
+  /* Stacked, the button spans the column — a content-width control looks
+     stranded on a phone. Only the MARK keeps a cap. */
+  .act{max-width:none}
+  .mark img{width:auto;max-height:clamp(96px,15svh,170px)}
 }
-/* Below this the doors' second line is the first thing worth spending height on;
-   the claim and the button face carry the meaning on their own. */
+/* The doors' second line is the first thing worth spending height on. */
 @media (max-width:460px){.doors span:not(.go){display:none}}
 
 /* ═══ HEIGHT: three tiers, because height is the budget ═══════════════════════
-   Measured, not guessed — every size below was set by putting the page in a
-   same-origin iframe at real device viewports and reading scrollHeight. The
-   tiers are keyed on HEIGHT, not width: a 748px-tall phone and a 768px laptop
-   run out of room in exactly the same way, and a width breakpoint misses one of
-   them every time. Nothing is deleted in any tier except the anvil in the last —
-   the claim, the door, all four signposts and the privacy line always survive. */
+   Measured, not guessed: each size was set by loading this page in a same-origin
+   iframe at real device viewports. Keyed on HEIGHT — a 748px phone and a 768px
+   laptop run out of room identically, and a width breakpoint misses one of them.
+   Nothing is deleted in any tier except the anvil in the last; the claim, the
+   door, all four signposts and the privacy line always survive. */
 @media (max-height:880px){
   .say h1{font-size:clamp(28px,4.2vw,52px)}
-  .enter{font-size:clamp(22px,2.4vw,32px)}
-  .art img{max-height:clamp(150px,25svh,240px)}
+  .enter{font-size:clamp(22px,2.2vw,32px)}
 }
+/* Desktop only — unscoped, this beat the stacked layout's `.act{max-width:none}`
+   above and re-narrowed the phone button to content width. */
+@media (max-height:880px) and (min-width:901px){.act{max-width:clamp(220px,38svh,380px)}}
 @media (max-height:760px){
   .say h1{font-size:clamp(25px,3.6vw,44px)}
   .say__sub{font-size:14.5px;margin:9px 0 0}
-  .enter{font-size:clamp(19px,2.1vw,28px);padding:12px 22px;margin:11px 0 0}
-  .fine{font-size:12px;margin:8px 0 0}
-  .art img{max-height:clamp(72px,9svh,150px)}
-  .doors a{padding:10px 11px}
+  .enter{font-size:clamp(19px,2.1vw,28px);padding:12px 18px;margin:8px 0 0}
+  .fine{font-size:12px;margin:6px 0 0}
+  /* width:auto is LOAD-BEARING beside a max-height: .mark img sets width:100%, a
+     definite width, so capping only height SQUASHES the anvil (measured 269x80). */
+  .mark img{width:auto;max-height:clamp(88px,14svh,150px)}
+  .doors a{padding:9px 10px}
   .doors b{font-size:16px}
-  .doors .go{font-size:12px;padding-top:6px}
+  .doors .go{font-size:12px;padding-top:5px}
   .doors span:not(.go){display:none}
-  .foot{font-size:11.5px;padding:8px 0}
-  .stage{gap:10px;padding:9px 0}
+  .foot{font-size:11.5px;padding:7px 0}
+  .stage{gap:9px;padding:8px 0}
   .brand img{height:34px}
   .say .brand{margin:0 0 8px}
 }
-/* Phone landscape. The anvil is the one thing that goes — 390px of height can
-   hold the claim, the door and the signposts, or it can hold a portrait mark,
-   and the mark is the part the reader can do without. */
+/* Phone landscape. 390px of height holds the claim, the door and the signposts,
+   or it holds a portrait mark — the mark is what a reader can do without. */
 @media (max-height:620px){
-  .art{display:none}
-  /* the art is gone here, so the brand icon comes back — it is now the only mark */
-  .brand img{display:block;height:30px}
+  /* only the MARK goes — .act still holds the button, which never goes anywhere */
+  .mark{display:none}
+  .enter{margin:0}
+  .brand img{height:30px}
   .brand span{font-size:19px}
   .say .brand{margin:0 0 8px}
   .say h1{font-size:clamp(22px,3vw,32px)}
@@ -203,11 +201,13 @@ body{min-height:100svh;display:flex;flex-direction:column;background:transparent
       <p class="eyebrow">Sell before you build</p>
       <h1 class="disp">Stop building startups <em>nobody buys.</em></h1>
       <p class="say__sub">Seven gates. It tells you which one your idea fails — and when the idea is bad, <b>it says so.</b></p>
+    </div>
+    <div class="act">
+      <span class="mark">
+        <img src="/assets/anvil@2x.webp" alt="A lightbulb whose filament forms a question mark, forged as one continuous line into an anvil" width="667" height="883" fetchpriority="high">
+      </span>
       <a class="enter" href="https://app.ideaforgepro.com">Enter the forge <span class="arw">&rarr;</span></a>
       <p class="fine">Free · runs in your browser · your own API key · nothing reaches our servers</p>
-    </div>
-    <div class="art">
-      <img src="/assets/anvil@2x.webp" alt="A lightbulb whose filament forms a question mark, forged as one continuous line into an anvil" width="667" height="883" fetchpriority="high">
     </div>
   </div>
 
