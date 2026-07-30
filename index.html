@@ -36,553 +36,210 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css?1">
 <style>
-/* ═══ tokens ═══ Palette sampled from the mark itself: the anvil's cool white
-   (#E8F1F8) and the bulb's amber (#F79423, measured R247 G148 B35). */
-:root{
-  --pitch:#08090C; --iron:#101319; --raise:#161A22; --edge:#212734; --edge-2:#2E3747;
-  --neon:#E8F1F8; --ash:#8A97A8; --ash-dim:#5D6979;
-  --ember:#F79423; --gold:#FFD23F; --cold:#6B7686;
-  --display:"Big Shoulders Display","Haettenschweiler","Arial Narrow",sans-serif;
-  --body:"Archivo",-apple-system,"Segoe UI",Roboto,sans-serif;
-  --wrap:1160px; --gut:28px;
-  --fs-h1:clamp(52px,9vw,116px); --fs-h2:clamp(34px,5vw,60px); --fs-lead:clamp(17px,2vw,21px);
-}
-*{box-sizing:border-box}
-html{background:var(--pitch);-webkit-text-size-adjust:100%}
-/* background:transparent is LOAD-BEARING. html already paints --pitch, so body's
-   own background does NOT propagate to the canvas — it paints as a normal opaque
-   layer, and body::before (z-index:-2) sits behind it and never shows. The app has
-   no html{background} rule, which is why the same wallpaper works there untouched.
-   html keeps the black; body gets out of the way so the embers can be seen. */
-body{margin:0;background:transparent;color:var(--neon);font:400 17px/1.65 var(--body);-webkit-font-smoothing:antialiased;
-  position:relative}
-/* ═══ the forge wallpaper ═══════════════════════════════════════════════════
-   The same layer the app runs, so crossing from the landing into the forge is
-   one continuous room rather than two rooms with a door.
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE HOME PAGE IS ONE SURFACE. No scroll, no bands, no manuscript.
 
-   FIXED, not absolute (the app uses absolute because its page is one screen at
-   a time). Fixed is what makes the sparks hold still while the panels ride up
-   over them — the parallax — and it means one viewport of art covers a page of
-   any length instead of being stretched down it.
+   Everything that used to live down the page now lives on its own page —
+   /gates.html, /personas.html, /sell-kit.html, /honest.html — and the only job
+   left here is: say what this is in one line, put the door to the forge where
+   nobody can miss it, and give four signposts that say where each other page
+   goes and what is behind it.
 
-   z-index:-2 puts it under the hero image (-1), which is under the content. */
-body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
-  background:var(--pitch) url("/assets/forge-paper.webp") top center/100% 100% no-repeat;
-  filter:url(#heat)}
-@media(prefers-reduced-motion:reduce){body::before{filter:none}}
-a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block}
-.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
-.eyebrow{font:600 12px/1 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--ember);margin:0 0 18px}
-.disp{font-family:var(--display);font-weight:800;line-height:.92;letter-spacing:-.01em;text-transform:uppercase}
-:focus-visible{outline:2px solid var(--ember);outline-offset:4px}
-
-/* ═══ buttons ═══ */
-.btn{display:inline-flex;align-items:center;gap:10px;font:600 16px/1 var(--body);
-  padding:16px 26px;border:1px solid transparent;cursor:pointer;transition:background .16s,border-color .16s,color .16s}
-.btn--go{background:var(--ember);color:#150A00}
-.btn--go:hover{background:var(--gold)}
-.btn--quiet{border-color:var(--edge-2);color:var(--neon)}
-.btn--quiet:hover{border-color:var(--ember);color:var(--ember)}
-.btn--sm{padding:11px 18px;font-size:14px}
-
-/* ═══ nav ═══ */
-.nav{position:sticky;top:0;z-index:20;background:rgba(8,9,12,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--edge)}
-.nav__in{display:flex;align-items:center;justify-content:space-between;height:58px}
-.brand{display:flex;align-items:center;gap:11px}
-.brand img{height:44px;width:auto;display:block;position:relative;top:-1px;
-  filter:drop-shadow(0 0 9px rgba(247,148,35,.55))}
-.brand span{font-family:var(--display);font-weight:800;font-size:24px;line-height:1;letter-spacing:.02em;text-transform:uppercase}
-
-/* ═══ hero ═══ */
-.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--edge)}
-.hero__in{position:relative;z-index:1;
-  display:grid;grid-template-columns:1.08fr .92fr;gap:40px;align-items:center;
-  padding:clamp(20px,3vw,36px) 0 clamp(48px,7vw,76px)}
-
-/* ╔═══════════════════════════════════════════════════════════════════════╗
-   ║  HERO BACKDROP — THE ONE SWAPPABLE LAYER                              ║
-   ║                                                                       ║
-   ║  Everything painted behind the hero lives in this single rule.        ║
-   ║                                                                       ║
-   ║  Two layers, top to bottom:                                           ║
-   ║    1. the scrim — a left-heavy wash of --pitch. The headline sits on   ║
-   ║       the left, so the left stays near-solid and the wash thins out    ║
-   ║       toward the anvil on the right, letting the forge light through.  ║
-   ║    2. the forge plate itself, anchored `center bottom` so the ember    ║
-   ║       bed lands on the hero's bottom edge and reads as a floor.        ║
-   ║                                                                       ║
-   ║  MEASURED, not guessed: the band is 1394×873 (~1.6:1) at a 1440        ║
-   ║  viewport, and gets WIDER as the window grows (~2.9:1 at 2560) since   ║
-   ║  its height is set by the text, not the window. So `cover` crops a     ║
-   ║  replacement plate differently at every width:                        ║
-   ║    · 1821×864 (this one) loses ~12% off EACH SIDE at 1440;            ║
-   ║    · past ~1.6:1 viewports it crops off the TOP instead — which is     ║
-   ║      why the anchor is `bottom`: the ember bed must survive.           ║
-   ║  So for any replacement: keep the light between 15% and 85%            ║
-   ║  horizontally and in the LOWER half, and let the top be expendable.    ║
-   ║  Keep it in the RIGHT half too — the left half is the text well.       ║
-   ╚═══════════════════════════════════════════════════════════════════════╝ */
-/* FIXED to the viewport so it stays put while the page moves — the plate the
-   solid panels below slide up over and bury. Once buried it is gone for good
-   and the ember wallpaper behind it is what the rest of the page sits on.
-   z-index:-1: above the wallpaper, below every panel. */
-/* THE PARALLAX. position:fixed was wrong — an opaque full-viewport plate that
-   never leaves, so it covered the ember wallpaper at every scroll position and
-   the "open" panels below revealed nothing but hero art.
-   Absolute inside the hero (so it ENDS when the hero does) with the image layer
-   background-attachment:fixed (so it holds still while the hero rides up over
-   it). The gradient scrolls with the element; only the photograph is pinned.
-   iOS Safari ignores fixed attachment and falls back to a normal scroll — the
-   art still reads, it simply does not hold. */
-.hero{overflow:hidden}
-.hero__bg{position:absolute;inset:0;z-index:0;pointer-events:none;
+   HEIGHT IS THE BUDGET. Every vertical measure below is svh- or vw-clamped so
+   the surface compresses instead of overflowing on a short laptop or a phone.
+   100svh (small viewport height) is deliberate: 100vh is the tall-chrome
+   measurement on mobile and would push the doors under the address bar.
+   ═══════════════════════════════════════════════════════════════════════════ */
+body{min-height:100svh;display:flex;flex-direction:column;background:transparent}
+.stage{position:relative;flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;
+  gap:clamp(14px,2.4svh,40px);padding:clamp(12px,2svh,32px) 0;overflow:hidden}
+/* LOAD-BEARING. .wrap carries `margin:0 auto`, and an auto margin on the cross
+   axis of a flex item cancels the default stretch — so each child sized itself
+   to its own content and landed on a different left edge. Measured at 1440: the
+   headline sat at x=283 while the signposts sat at x=168. width:100% restores
+   the stretch and puts the claim, the button and the four doors in one gutter. */
+.stage>.wrap{width:100%}
+/* The forge plate, scrimmed left-heavy so the headline keeps a dark well to sit
+   in while the light survives on the right behind the anvil. */
+.stage__bg{position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:
-    linear-gradient(96deg,var(--pitch) 0 20%,rgba(8,9,12,.74) 44%,
-      rgba(8,9,12,.34) 68%,rgba(8,9,12,.10) 100%),
-    url("/assets/hero-bg.webp") center bottom/cover no-repeat;
-  background-attachment:scroll,fixed;
-  background-color:transparent}
-.hero h1{font-size:var(--fs-h1);margin:0;max-width:12ch}
-.hero h1 em{font-style:normal;color:var(--ember)}
-.hero__lead{font-size:var(--fs-lead);color:var(--ash);max-width:46ch;margin:26px 0 0}
-.hero__cta{display:flex;gap:14px;flex-wrap:wrap;margin:28px 0 0}
-/* the trust moment — the one thing no competitor will say */
-.hero__blunt{margin:24px 0 0;padding:16px 0 0;border-top:1px solid var(--edge);
-  font:500 16px/1.5 var(--body);color:var(--neon);max-width:44ch}
-.hero__blunt b{color:var(--ember);font-weight:600}
-.hero__fine{margin:14px 0 0;font-size:14px;color:var(--ash-dim)}
-/* The ways in. Sits under the promise line, one step quieter than it, because it answers
-   "what do I actually do first" rather than making a claim. */
-.hero__ways{margin:8px 0 0;font-size:14px;line-height:1.6;color:var(--ash)}
-.hero__ways b{color:var(--ember)}
-.hero__ways-fine{display:block;margin-top:3px;font-size:13px;color:var(--ash-dim)}
-/* ═══ the mark ═══
-   The halo sits DIRECTLY BEHIND the anvil. Its strength is one knob.
-   Dropped .30 → .14 when the forge plate went in behind: the plate supplies
-   the light now, and the halo's remaining job is separation — holding the
-   anvil off the ember texture so its outline stays legible. */
-.hero__art{justify-self:center;position:relative;--anvil-glow:.14}
-.hero__art::before{content:"";position:absolute;left:50%;top:48%;translate:-50% -50%;
+    linear-gradient(96deg,var(--pitch) 0 18%,rgba(8,9,12,.76) 44%,
+      rgba(8,9,12,.36) 70%,rgba(8,9,12,.12) 100%),
+    url("/assets/hero-bg.webp") center bottom/cover no-repeat var(--pitch)}
+.stage__in{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(20px,4vw,48px);align-items:center}
+
+/* ═══ the say ═══ brand, claim, door. Nothing else. */
+.say .brand{margin:0 0 clamp(8px,1.6svh,22px)}
+.say .eyebrow{margin:0 0 10px}
+.say h1{font-size:clamp(30px,5vw,72px);margin:0;max-width:13ch}
+.say h1 em{font-style:normal;color:var(--ember)}
+.say__sub{font-size:clamp(15px,1.4vw,18px);color:var(--ash);max-width:44ch;margin:12px 0 0}
+.say__sub b{color:var(--neon);font-weight:600}
+/* ═══ THE CALL TO ACTION ═══ It is the largest interactive thing on the site by
+   a wide margin, in the display face, and it is the only ember-filled control on
+   the surface — every other button here is an outline. Size is the hierarchy. */
+.enter{display:inline-flex;align-items:center;gap:14px;margin:clamp(14px,2.4svh,30px) 0 0;
+  font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.02em;
+  font-size:clamp(24px,2.9vw,40px);line-height:1;padding:clamp(14px,2svh,22px) clamp(24px,3.2vw,46px);
+  background:var(--ember);color:#150A00;border:1px solid var(--ember);
+  box-shadow:0 0 0 rgba(247,148,35,0);animation:enterBreathe 3.6s ease-in-out infinite;
+  transition:background .16s,box-shadow .16s,transform .16s}
+@keyframes enterBreathe{0%,100%{box-shadow:0 0 0 rgba(247,148,35,0)}
+  50%{box-shadow:0 0 34px rgba(247,148,35,.34)}}
+.enter:hover{background:var(--gold);border-color:var(--gold);transform:translateY(-2px);
+  animation:none;box-shadow:0 0 38px rgba(247,148,35,.5)}
+.enter .arw{transition:transform .16s ease}
+.enter:hover .arw{transform:translateX(4px)}
+/* No max-width: the say column already caps it, and a ch-based cap orphaned
+   "reaches our servers" onto a second line at every desktop width. */
+.fine{margin:11px 0 0;font-size:13px;color:var(--ash-dim)}
+/* The home footer is the tightest one on the site — every pixel it spends is a
+   pixel the doors don't have. The sub-pages keep the roomier shared version. */
+.foot{padding:clamp(9px,1.6svh,18px) 0;font-size:12.5px}
+
+/* ═══ the mark ═══ capped by HEIGHT so a tall image can never set the page's. */
+.art{justify-self:center;position:relative}
+.art::before{content:"";position:absolute;left:50%;top:48%;translate:-50% -50%;
   width:104%;aspect-ratio:1/1;border-radius:50%;pointer-events:none;z-index:0;
-  background:radial-gradient(closest-side,
-    rgba(247,148,35,var(--anvil-glow)),
-    rgba(247,148,35,calc(var(--anvil-glow) * .34)) 52%,
-    transparent 74%)}
-/* The mark is PORTRAIT (667x883). Cap it by HEIGHT, not width, so it sits balanced
-   against the headline and never runs past the fold on short laptop viewports —
-   width-capping a tall image made the hero overflow. */
-.hero__art img{position:relative;z-index:1;width:auto;max-width:100%;max-height:clamp(260px,38vh,360px);
+  background:radial-gradient(closest-side,rgba(247,148,35,.14),
+    rgba(247,148,35,.05) 52%,transparent 74%)}
+.art img{position:relative;z-index:1;width:auto;max-width:100%;max-height:clamp(170px,32svh,320px);
   filter:drop-shadow(0 0 10px rgba(232,241,248,.26)) drop-shadow(0 0 40px rgba(247,148,35,.22))}
 
-/* ═══ generic section ═══ */
-.band{padding:clamp(72px,10vw,124px) 0;border-bottom:1px solid var(--edge);position:relative;z-index:1}
-/* THE PARALLAX. The first panels are SOLID: they ride up over the fixed hero
-   plate and cover it, which is the whole effect — the image does not scroll
-   away, it gets buried. Only once it is buried do we open the panels up and
-   let the ember wallpaper through, so the sparks arrive as a reveal instead of
-   competing with the hero art for the same screen.
-   Two solid panels is the minimum that reads as deliberate; the third is where
-   the heat comes back. */
-.band--solid{background:var(--pitch)}
-/* Translucent, not transparent: the wallpaper should read as atmosphere behind
-   the words, never as texture underneath them. */
-.band--open{background:rgba(8,9,12,.58);backdrop-filter:blur(2px)}
-.band h2{font-size:var(--fs-h2);margin:0;max-width:18ch}
-/* same emphasis pattern as the hero h1: the sentence that carries the edge
-   goes ember, so the turn in the line is visible before it is read */
-.band h2 em{font-style:normal;color:var(--ember)}
-.band__lead{font-size:var(--fs-lead);color:var(--ash);max-width:60ch;margin:22px 0 0}
-.band__lead b{color:var(--neon);font-weight:600}
+/* ═══ THE FOUR DOORS ═══ Each one is a whole clickable tile: two short lines
+   that say what is behind it, and a button face that says where it goes. The
+   wording and the button are the same control — a reader never has to match a
+   sentence to a link somewhere else on the page.
+   Four explicit columns, then two, then two. Never auto-fit: it orphans the
+   fourth tile at any width where the column count doesn't divide four. */
+.doors{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,1vw,16px)}
+.doors a{display:flex;flex-direction:column;gap:5px;padding:clamp(11px,1.4vw,18px);
+  background:rgba(16,19,25,.72);border:1px solid var(--edge);backdrop-filter:blur(3px);
+  transition:border-color .16s,background .16s,transform .16s}
+.doors a:hover{border-color:var(--ember);background:rgba(22,26,34,.86);transform:translateY(-2px)}
+.doors b{font-family:var(--display);font-weight:700;text-transform:uppercase;
+  font-size:clamp(17px,1.5vw,21px);line-height:1.05;color:var(--neon)}
+.doors span{font-size:13.5px;line-height:1.45;color:var(--ash)}
+.doors .go{margin-top:auto;padding-top:8px;font:600 13px/1 var(--body);color:var(--ember);
+  display:inline-flex;align-items:center;gap:7px}
+.doors a:hover .go .arw{transform:translateX(3px)}
+.doors .arw{transition:transform .16s ease}
 
-/* ═══ SIGNATURE — the seven gates as cooling metal ═══
-   Gate 1 leaves the fire white-hot; by gate 7 the idea is cold, hard iron.
-   The colour ramp is the content: it is what forging does. */
-.gates{margin:56px 0 0;border-top:1px solid var(--edge)}
-.gate{display:grid;grid-template-columns:96px 1fr;gap:28px;align-items:baseline;
-  padding:26px 0;border-bottom:1px solid var(--edge);position:relative}
-.gate__n{font-family:var(--display);font-weight:800;font-size:58px;line-height:.8;
-  color:var(--heat);text-shadow:0 0 24px color-mix(in srgb,var(--heat) 45%,transparent)}
-.gate h3{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.01em;
-  font-size:27px;margin:0 0 7px;color:var(--neon)}
-.gate p{margin:0;color:var(--ash);max-width:64ch}
-.gates__foot{margin:22px 0 0;font-size:15px;color:var(--ash-dim)}
-
-/* ═══ the deliverable ═══ */
-/* Same even-step rule as .honest — 4 items must never break 3+1. The hairline
-   gap makes an orphan worse here: it leaves a half-drawn grid. */
-.kit{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
-  margin:52px 0 0;background:var(--edge);border:1px solid var(--edge)}
-@media (max-width:1040px){.kit{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:560px){.kit{grid-template-columns:1fr}}
-.kit__i{background:var(--iron);padding:28px 24px}
-.kit__i h3{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:21px;margin:0 0 9px}
-.kit__i p{margin:0;font-size:15.5px;color:var(--ash)}
-
-/* ═══ meet the experts ═══
-   The four personas that voice the critique. Shown as a gallery so the "these are
-   real agents from a real product" story is visible before it is read. Even steps:
-   4 → 2 → 1, never an orphan (same rule as .honest / .kit). */
-/* ═══ the two duties ════════════════════════════════════════════════════════
-   Five identical cards in one row taught nobody anything: the Smith and the
-   Prospector work WITH you and the other three rule ON you, and mixing them in
-   a flat five-up implied they were interchangeable voices to weigh equally.
-
-   Split by duty, in the order the founder meets them, and differentiated by
-   SHAPE as well as colour — the builders run wide with the portrait beside the
-   text, the council stays a portrait grid. That survives a greyscale screenshot
-   and a colour-blind reader; the accent hue is confirmation, not the signal. */
-.squad-h{font-family:var(--display);font-weight:700;text-transform:uppercase;
-  font-size:15px;letter-spacing:.06em;margin:52px 0 6px;display:flex;align-items:center;gap:12px}
-.squad-h::after{content:"";flex:1 1 auto;height:1px;background:var(--edge)}
-.squad-h--build{color:var(--gold)}
-.squad-h--council{color:var(--ember)}
-.squad-note{margin:0 0 22px;color:var(--ash);font-size:15px;max-width:62ch}
-.squad-note em{color:var(--neon);font-style:italic}
-
-.experts{display:grid;gap:20px;margin:0}
-.experts--council{grid-template-columns:repeat(3,1fr)}
-/* Wide cards: portrait left, text right. The different silhouette is the tell. */
-.experts--build{grid-template-columns:repeat(2,1fr)}
-.expert--build{display:grid;grid-template-columns:96px 1fr;gap:4px 18px;text-align:left;align-items:start}
-/* Explicit placement. Auto-flow filled the two columns row by row, so the portrait, the tag, the
-   name and the blurb landed in four different cells and the card read as scrambled. The portrait
-   owns column 1 across every row; all the text sits in column 2. */
-.expert--build img{width:96px;height:96px;margin:0;grid-column:1;grid-row:1 / span 3}
-.expert--build .expert__tag,.expert--build h3,.expert--build p{grid-column:2;text-align:left}
-.expert--build h3{margin:0 0 8px}
-.expert--build .expert__tag{color:var(--gold)}
-.expert--build{border-color:rgba(255,210,63,.28)}
-@media (max-width:900px){.experts--build{grid-template-columns:1fr}}
-
-@media (max-width:640px){.experts--council{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:420px){.experts--council{grid-template-columns:1fr;max-width:340px;margin-inline:auto}
-  .expert--build{grid-template-columns:1fr;text-align:center}
-  .expert--build img{margin:0 auto 14px}}
-.expert{background:var(--iron);border:1px solid var(--edge);border-radius:12px;
-  padding:24px 20px 26px;text-align:center}
-.expert img{width:132px;height:132px;border-radius:10px;object-fit:cover;margin:0 auto 16px;
-  border:1px solid var(--edge-2);box-shadow:0 6px 18px rgba(0,0,0,.5)}
-.expert__tag{font:600 11px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--ember);margin:0 0 7px}
-.expert h3{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:22px;margin:0 0 10px;color:var(--neon)}
-.expert p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ash)}
-.experts__foot{margin:40px 0 0;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
-.experts__foot p{margin:0;color:var(--ash);font-size:15.5px}
-.experts__foot b{color:var(--neon);font-weight:600}
-
-/* ═══ honesty ═══ */
-/* Explicit even steps — 4, then 2, then 1. `auto-fit` chose 3 columns for these
-   4 cards and orphaned the fourth on its own row, the same defect that sank the
-   Airo build's gate cards. auto-fit orphans at ANY width where the column count
-   doesn't divide the item count, so the count has to be stated, not derived. */
-.honest{display:grid;grid-template-columns:repeat(4,1fr);gap:34px;margin:52px 0 0}
-@media (max-width:1040px){.honest{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:560px){.honest{grid-template-columns:1fr}}
-/* The credential lands AFTER the four behaviours, never before them: nobody has
-   heard of INTEGRA, so a badge up front reads as a fake authority seal. It is
-   the name given to behaviour already demonstrated. */
-/* The block's own top rule and the section's bottom rule bracket this row.
-   Matching padding on each side (its own top, the section's bottom via
-   band--tail) centres the text+button between them instead of stranding them
-   against the top rule with the section's whole bottom pad empty below. */
-.integra{margin:44px 0 0;padding:56px 0 0;border-top:1px solid var(--edge);
-  display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
-.band--tail{padding-bottom:56px}
-/* flex:0 1 — the text sizes to its content instead of growing to fill the row,
-   so the text+button group sits centered rather than pinned to the edges. */
-.integra p{margin:0;flex:0 1 440px;font:400 16px/1.6 var(--body);color:var(--ash)}
-.integra p b{color:var(--neon);font-weight:600;letter-spacing:.03em}
-/* The stamp is a link, so it has to LOOK actionable — the bare plate read as
-   decoration. A framed hit-area + an explicit caption row carry the affordance;
-   the plate alone can't. 340px (was 248): the row has the room and the mark is
-   the point of this block, not a footnote. */
-.integra__stamp{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:9px;
-  width:340px;padding:16px 16px 13px;border:1px solid var(--edge-2);border-radius:10px;
-  background:rgba(22,26,34,.4);text-decoration:none;
-  animation:integraPulse 3.4s ease-in-out infinite;
-  transition:border-color .16s ease,background .16s ease,transform .16s ease,box-shadow .16s ease}
-/* Slow ember breathe so the eye catches it as interactive without it nagging.
-   Hover overrides the animated shadow with a stronger steady one. */
-@keyframes integraPulse{
-  0%,100%{box-shadow:0 0 0 rgba(247,148,35,0)}
-  50%{box-shadow:0 0 22px rgba(247,148,35,.28)}}
-.integra__stamp:hover,.integra__stamp:focus-visible{border-color:var(--ember);
-  background:rgba(22,26,34,.7);transform:translateY(-2px);
-  animation:none;box-shadow:0 0 26px rgba(247,148,35,.42)}
-.integra__stamp img{width:100%;height:auto;display:block}
-.integra__cta{font:600 13px/1 var(--body);letter-spacing:.02em;color:var(--ash);
-  display:inline-flex;align-items:center;gap:6px}
-.integra__stamp:hover .integra__cta,.integra__stamp:focus-visible .integra__cta{color:var(--ember)}
-.integra__cta .arw{transition:transform .16s ease}
-.integra__stamp:hover .integra__cta .arw{transform:translateX(3px)}
-@media (max-width:560px){.integra__stamp{width:100%;max-width:320px}}
-.honest__i{border-left:2px solid var(--ember);padding:2px 0 2px 20px}
-.honest__i h3{font:600 16.5px/1.4 var(--body);margin:0 0 7px;color:var(--neon)}
-.honest__i p{margin:0;font-size:15.5px;color:var(--ash)}
-
-/* ═══ close ═══ */
-.close{padding:clamp(84px,12vw,148px) 0;text-align:center;position:relative;z-index:1;background:rgba(8,9,12,.48)}
-.close h2{font-size:var(--fs-h2);margin:0 auto;max-width:16ch}
-.close p{color:var(--ash);font-size:var(--fs-lead);margin:20px auto 0;max-width:48ch}
-.close__cta{margin:38px 0 0}
-
-/* ═══ the footer — the same bed of coals that closes the app ════════════════
-   Ported verbatim in behaviour: a bottom-anchored strip of live coals fading in
-   from the dark, the heat rippling off them through the page's own #heat filter
-   so it moves in step with the wallpaper, and a solid black bar under the text
-   so the glow never washes out the words. */
-.forge-foot{position:relative;margin-top:0;z-index:1}
-.forge-foot-seam{height:150px;
-  background:url("/assets/forge-coals.webp") bottom center/cover no-repeat;
-  -webkit-mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.5) 40%,#000 74%);
-  mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.5) 40%,#000 74%);
-  opacity:.95}
-/* The glow lives on the PARENT, not the seam: the seam carries a mask, and a
-   mask applies to its pseudo-elements too — a glow inside it would be erased by
-   the very fade that softens the top edge. On the parent it can also bleed
-   upward past the footer, which is what makes it read as light, not a border. */
-.forge-foot::before{content:"";position:absolute;left:0;right:0;top:-26px;height:88px;z-index:2;
-  pointer-events:none;
-  background:radial-gradient(130% 100% at 50% 100%,
-    rgba(255,168,72,.50), rgba(198,104,38,.26) 46%, rgba(140,66,20,.08) 68%, transparent 80%);
-  filter:blur(12px) url(#heat);
-  animation:coal-breathe 6.5s ease-in-out infinite}
-@keyframes coal-breathe{0%,100%{opacity:.62}50%{opacity:1}}
-@media(prefers-reduced-motion:reduce){.forge-foot::before{animation:none;opacity:.8;filter:blur(12px)}}
-/* Opaque black under the words — the very bottom of the page is clean. */
-.foot{padding:26px 0 34px;color:var(--ash-dim);font-size:14px;background:var(--pitch);
-  position:relative;z-index:1}
-.foot__in{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
-.foot__mark{display:flex;align-items:center;gap:9px;color:var(--ash)}
-.foot__mark img{height:22px;width:auto;opacity:.85}
-/* The footer mark was already making this claim before anything backed it —
-   now it is a claim you can click and check. */
-.foot__ledger{flex:1 1 22rem;min-width:0;opacity:.72;font-size:.86em;line-height:1.5}
-.foot__integra{border-bottom:1px solid var(--edge-2);padding-bottom:1px}
-.foot__integra:hover{color:var(--ember);border-color:var(--ember)}
-
+/* ═══ WIDTH: how the surface reflows ═══ */
 @media (max-width:900px){
-  .hero__in{grid-template-columns:1fr;gap:8px}
-  /* stacked: the text no longer has a dark left half to sit in, and a narrow
-     viewport crops `cover` to the plate's bright middle — so flood the whole
-     band instead of relying on the left-heavy scrim */
-  .hero__bg{box-shadow:inset 0 0 0 100vmax rgba(8,9,12,.58)}
-  .hero__art{grid-row:1;justify-self:start}
-  .hero__art img{width:min(64%,300px)}
-  .gate{grid-template-columns:64px 1fr;gap:18px}
-  .gate__n{font-size:42px}
+  .stage__in{grid-template-columns:1fr;gap:10px;justify-items:start}
+  .art{grid-row:1;justify-self:start}
+  .art img{max-height:clamp(84px,11svh,120px)}
+  .doors{grid-template-columns:repeat(2,1fr)}
+  .say h1{max-width:none}
+  /* Stacked, the anvil sits directly above the brand row — and the brand row's
+     own icon is the SAME anvil. Two of them in a column reads as a rendering
+     fault, so the small one goes and the wordmark stands alone under the art. */
+  .brand img{display:none}
 }
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* Below this the doors' second line is the first thing worth spending height on;
+   the claim and the button face carry the meaning on their own. */
+@media (max-width:460px){.doors span:not(.go){display:none}}
+
+/* ═══ HEIGHT: three tiers, because height is the budget ═══════════════════════
+   Measured, not guessed — every size below was set by putting the page in a
+   same-origin iframe at real device viewports and reading scrollHeight. The
+   tiers are keyed on HEIGHT, not width: a 748px-tall phone and a 768px laptop
+   run out of room in exactly the same way, and a width breakpoint misses one of
+   them every time. Nothing is deleted in any tier except the anvil in the last —
+   the claim, the door, all four signposts and the privacy line always survive. */
+@media (max-height:880px){
+  .say h1{font-size:clamp(28px,4.2vw,52px)}
+  .enter{font-size:clamp(22px,2.4vw,32px)}
+  .art img{max-height:clamp(150px,25svh,240px)}
+}
+@media (max-height:760px){
+  .say h1{font-size:clamp(25px,3.6vw,44px)}
+  .say__sub{font-size:14.5px;margin:9px 0 0}
+  .enter{font-size:clamp(19px,2.1vw,28px);padding:12px 22px;margin:11px 0 0}
+  .fine{font-size:12px;margin:8px 0 0}
+  .art img{max-height:clamp(72px,9svh,150px)}
+  .doors a{padding:10px 11px}
+  .doors b{font-size:16px}
+  .doors .go{font-size:12px;padding-top:6px}
+  .doors span:not(.go){display:none}
+  .foot{font-size:11.5px;padding:8px 0}
+  .stage{gap:10px;padding:9px 0}
+  .brand img{height:34px}
+  .say .brand{margin:0 0 8px}
+}
+/* Phone landscape. The anvil is the one thing that goes — 390px of height can
+   hold the claim, the door and the signposts, or it can hold a portrait mark,
+   and the mark is the part the reader can do without. */
+@media (max-height:620px){
+  .art{display:none}
+  /* the art is gone here, so the brand icon comes back — it is now the only mark */
+  .brand img{display:block;height:30px}
+  .brand span{font-size:19px}
+  .say .brand{margin:0 0 8px}
+  .say h1{font-size:clamp(22px,3vw,32px)}
+  .stage{gap:10px;padding:8px 0}
+}
+/* …and once it goes, a wide-but-short viewport has room to stand the signposts
+   BESIDE the claim instead of under it, which is where the height comes from. */
+@media (max-height:620px) and (min-width:700px){
+  .stage{flex-direction:row;align-items:center;justify-content:center}
+  .stage__in{flex:1 1 60%;max-width:696px}
+  .doors{flex:1 1 40%;max-width:464px;grid-template-columns:repeat(2,1fr)}
+}
 </style>
 <script src="/assets/analytics.js" defer></script>
 </head>
 <body>
 
-<!-- Heat-haze filter: fractal noise displaces whatever it's applied to, and the animated
-     baseFrequency makes the distortion shimmer like hot air rising. Used on the molten footer seam. -->
-<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
-  <filter id="heat" x="-20%" y="-30%" width="140%" height="160%" color-interpolation-filters="sRGB">
-    <!-- Broad, soft, low-frequency noise → a mirage, not tight bands. Two motions layered:
-         a slow spline breath on baseFrequency (shimmer) and a gentle vertical drift on the noise
-         (feOffset) so the distortion rises off the seam like hot air instead of pulsing in place. -->
-    <feTurbulence type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="2" seed="4" result="n0">
-      <animate attributeName="baseFrequency" dur="6s" repeatCount="indefinite"
-               calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"
-               values="0.009 0.012;0.011 0.017;0.009 0.012"/>
-    </feTurbulence>
-    <feOffset in="n0" result="n" dy="0">
-      <animate attributeName="dy" dur="3.2s" repeatCount="indefinite"
-               calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"
-               values="10;-10;10"/>
-    </feOffset>
-    <feDisplacementMap in="SourceGraphic" in2="n" scale="11" xChannelSelector="R" yChannelSelector="G"/>
-  </filter>
-</svg>
+<main class="stage">
+  <div class="stage__bg"></div>
 
-
-<nav class="nav">
-  <div class="wrap nav__in">
-    <a class="brand" href="/"><img src="/assets/mark.webp" alt="" width="30" height="30"><span>Idea Forge Pro</span></a>
-    <a class="btn btn--go btn--sm" href="https://app.ideaforgepro.com">Forge an idea free</a>
-  </div>
-</nav>
-
-<header class="hero">
-  <div class="hero__bg"></div>
-  <div class="wrap hero__in">
-    <div>
+  <div class="wrap stage__in">
+    <div class="say">
+      <a class="brand" href="/"><img src="/assets/mark.webp" alt="" width="30" height="30"><span>Idea Forge Pro</span></a>
       <p class="eyebrow">Sell before you build</p>
       <h1 class="disp">Stop building startups <em>nobody buys.</em></h1>
-      <p class="hero__lead">Idea Forge Pro puts your idea through seven gates and tells you which one it fails — before you write a line of code.</p>
-      <div class="hero__cta">
-        <a class="btn btn--go" href="https://app.ideaforgepro.com">Forge an idea free</a>
-        <a class="btn btn--quiet" href="#gates">See the seven gates</a>
-      </div>
-      <p class="hero__blunt">It will tell you when your idea is bad. <b>That's the point.</b></p>
-      <p class="hero__fine">Free · runs in your browser · your own API key · includes free voice-to-text · nothing reaches our servers</p>
-      <!-- How the idea gets IN. The page described the seven gates and the Sell-Kit at length and
-           never said what you actually do first, which for a founder holding a messy notes file or
-           a half-formed thought is the question that decides whether they start at all. -->
-      <p class="hero__ways">Type it, paste your notes, drop in a <b>.md, .txt or PDF</b> — or just <b>say it out loud</b>. <span class="hero__ways-fine">Dictation uses a free Groq key; everything else runs on any provider.</span></p>
+      <p class="say__sub">Seven gates. It tells you which one your idea fails — and when the idea is bad, <b>it says so.</b></p>
+      <a class="enter" href="https://app.ideaforgepro.com">Enter the forge <span class="arw">&rarr;</span></a>
+      <p class="fine">Free · runs in your browser · your own API key · nothing reaches our servers</p>
     </div>
-    <div class="hero__art">
+    <div class="art">
       <img src="/assets/anvil@2x.webp" alt="A lightbulb whose filament forms a question mark, forged as one continuous line into an anvil" width="667" height="883" fetchpriority="high">
     </div>
   </div>
-</header>
 
-<section class="band band--solid">
-  <div class="wrap">
-    <p class="eyebrow">The problem</p>
-    <h2 class="disp">Founders build first and find out last.</h2>
-    <p class="band__lead">You spend six months building, then go looking for someone to pay for it. That is the wrong order. <b>Most ideas die in the market, not in the code</b> — the code was never the hard part. The hard part is proving somebody will hand you money, and that can be answered in an afternoon.</p>
-  </div>
-</section>
+  <nav class="wrap doors" aria-label="What's inside">
+    <a href="/gates.html">
+      <b>Seven gates</b>
+      <span>Fail one and the forge makes you fix it before you go on.</span>
+      <span class="go">See the gates <span class="arw">&rarr;</span></span>
+    </a>
+    <a href="/personas.html">
+      <b>Five minds</b>
+      <span>Two build it with you. Three judge what you made.</span>
+      <span class="go">Meet them <span class="arw">&rarr;</span></span>
+    </a>
+    <a href="/sell-kit.html">
+      <b>The Sell-Kit</b>
+      <span>Deal memo, validation plan, value artifact, builder spec.</span>
+      <span class="go">See what you get <span class="arw">&rarr;</span></span>
+    </a>
+    <a href="/honest.html">
+      <b>It stays honest</b>
+      <span>It marks what it cannot prove, and never sees your data.</span>
+      <span class="go">How <span class="arw">&rarr;</span></span>
+    </a>
+  </nav>
+</main>
 
-<section class="band band--solid" id="gates">
-  <div class="wrap">
-    <p class="eyebrow">The seven gates</p>
-    <!-- nbsp welds "the slag." so the 18ch measure cannot break after the
-         article and strand the payoff word on its own line -->
-    <h2 class="disp">Every gate separates the bloom from <em>the&nbsp;slag.</em></h2>
-    <p class="band__lead">Each gate has a graduation test. Fail one and the forge makes you fix it before you go on — because a weak buyer poisons every answer that follows.</p>
-
-    <div class="gates">
-      <div class="gate" style="--heat:#FFF6E0">
-        <div class="gate__n">01</div>
-        <div><h3>Buyer</h3><p>A buyer type sharp enough to go and find — “owners of single-location coffee roasters”, not “small businesses” — who already pay for something here, and you can say where they gather. The named individual comes later, at the test.</p></div>
-      </div>
-      <div class="gate" style="--heat:#FFD23F">
-        <div class="gate__n">02</div>
-        <div><h3>Problem</h3><p>In their words, not yours, with a reason to act now rather than next year. If they are in pain: frequent, and already worked around. If they buy this because they <em>want</em> it, the honest answer is the appetite they already spend on — an invented ache fails here.</p></div>
-      </div>
-      <div class="gate" style="--heat:#FFA82A">
-        <div class="gate__n">03</div>
-        <div><h3>Offer &amp; price</h3><p>The outcome they are buying, at a number they say yes to without a meeting. Defensible against doing nothing.</p></div>
-      </div>
-      <div class="gate" style="--heat:#F79423">
-        <div class="gate__n">04</div>
-        <div><h3>Value artifact</h3><p>Something real you can hand over before the next thing gets built — and that does the selling while you sleep.</p></div>
-      </div>
-      <div class="gate" style="--heat:#DC5F1E">
-        <div class="gate__n">05</div>
-        <div><h3>Pre-build test</h3><p>A costly, revealed commitment — a real dollar, a signature — with the pass line and the kill line written down before you start. Never a poll or a waitlist. Free product? Then name who eventually pays, and when.</p></div>
-      </div>
-      <div class="gate" style="--heat:#A0431F">
-        <div class="gate__n">06</div>
-        <div><h3>Channel</h3><p>One channel, gone deep, aimed at people already showing intent. Not a list you bought.</p></div>
-      </div>
-      <div class="gate" style="--heat:#6B7686">
-        <div class="gate__n">07</div>
-        <div><h3>Builder spec</h3><p>Only now: the minimum build that delivers the promise. Cold, hard, and ready to hand to whoever writes it.</p></div>
-      </div>
-    </div>
-    <p class="gates__foot">The colour does the talking — an idea enters white-hot and leaves as cold iron.</p>
-  </div>
-</section>
-
-<section class="band band--open">
-  <div class="wrap">
-    <p class="eyebrow">What you walk away with</p>
-    <h2 class="disp">A Sell-Kit you can act on today.</h2>
-    <p class="band__lead">A working document, not a report card. It's plain markdown, so it travels — you can hand it to a co-founder, an investor, a business-planning team, or the developer who is going to build it.</p>
-    <div class="kit">
-      <div class="kit__i"><h3>Deal memo</h3><p>One page: buyer, problem, why now, offer, price, channel. The whole idea, defensible, on a single screen.</p></div>
-      <div class="kit__i"><h3>Validation plan</h3><p>The exact test to run, with the pass line and the kill line set before you start — so the result isn't up for debate.</p></div>
-      <div class="kit__i"><h3>Value artifact</h3><p>The thing you give away to prove the value before you have a product to sell.</p></div>
-      <div class="kit__i"><h3>Builder spec</h3><p>Acceptance criteria, what must be nailed, and what is explicitly out of scope for v1.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="band band--open">
-  <div class="wrap">
-    <p class="eyebrow">Who forges it</p>
-    <h2 class="disp">Five minds. Two build with you, three judge&nbsp;it.</h2>
-    <p class="band__lead">They are not interchangeable, and knowing which is which matters: <b>two work with you</b>, generating and sharpening, and <b>three judge what you produce</b> with a reason to disagree with each other. You never argue with the builders and you never take advice from the council. Every one <b>designed in Deliberon</b>, the council engine this whole tool grew out of.</p>
-    <h3 class="squad-h squad-h--build">First — your side of the bench</h3>
-    <p class="squad-note">You meet these two first. They generate and sharpen <em>with</em> you; they never score you, and nothing they say is a verdict.</p>
-    <div class="experts experts--build">
-<article class="expert expert--build">
-        <img src="/assets/face-prospector.webp" alt="The Prospector" width="132" height="132" loading="lazy">
-        <p class="expert__tag">The Scout</p>
-        <h3>The Prospector</h3>
-        <p>Digs past the obvious to find a specific, overlooked problem worth solving. It's what the Spark button runs on.</p>
-      </article>
-<article class="expert expert--build">
-        <img src="/assets/face-smith.webp" alt="The Smith" width="132" height="132" loading="lazy">
-        <p class="expert__tag">The Companion</p>
-        <h3>The Smith</h3>
-        <p>Your partner at the anvil. When a gate needs work, he brainstorms novel, sellable angles to get it past what the council found. He builds with you — he never judges.</p>
-      </article>
-    </div>
-
-    <h3 class="squad-h squad-h--council">Then — the council</h3>
-    <p class="squad-note">They read the finished Sell-Kit and rule on it, each with a reason to disagree with the others. They never help you write it; that is the point of them.</p>
-    <div class="experts experts--council">
-<article class="expert">
-        <img src="/assets/face-bull.webp" alt="The Bull" width="132" height="132" loading="lazy">
-        <p class="expert__tag">The Steelman</p>
-        <h3>The Bull</h3>
-        <p>Builds the strongest version of your idea first — so what gets attacked is the real thing, not a strawman.</p>
-      </article>
-<article class="expert">
-        <img src="/assets/face-short.webp" alt="The Short Seller" width="132" height="132" loading="lazy">
-        <p class="expert__tag">The Adversary</p>
-        <h3>The Short Seller</h3>
-        <p>Attacks it like money is on the line. Demands falsifiable claims and names exactly how it fails.</p>
-      </article>
-<article class="expert">
-        <img src="/assets/face-closer.webp" alt="The Closer" width="132" height="132" loading="lazy">
-        <p class="expert__tag">The Closer</p>
-        <h3>The Closer</h3>
-        <p>Refuses to speculate. Wants a specific, reachable buyer and a real money-on-the-table test — not politeness — before the idea earns a yes.</p>
-      </article>
-    </div>
-    <div class="experts__foot">
-      <p>Every one was built in <b>Deliberon's Agent Designer</b> — given a mind, a mandate, and a temperament.</p>
-      <a class="btn btn--quiet btn--sm" href="/personas.html">Meet the experts &rarr;</a>
-    </div>
-  </div>
-</section>
-
-<section class="band band--open band--tail">
-  <div class="wrap">
-    <p class="eyebrow">How it stays honest</p>
-    <h2 class="disp">It marks what it cannot prove.</h2>
-    <p class="band__lead">Confident AI that invents numbers is worse than no AI at all — especially in a document you are about to send to someone who matters. So this one shows its work.</p>
-    <div class="honest">
-      <div class="honest__i"><h3>It sends unsourced claims back</h3><p>A hard number with nothing behind it — a market size, a percentage, a "research shows" — is caught before it reaches you and returned to the model to hedge, cite, or retract. Survive a second pass and you see it flagged.</p></div>
-      <div class="honest__i"><h3>It will fail your idea</h3><p>Gates come back weak or dead with a reason. Flattery here would cost you months, so you won't get any.</p></div>
-      <div class="honest__i"><h3>It never sees your data</h3><p>Your idea and your API key stay in your browser and go straight to your provider. No account, nothing on our servers. We do count page visits with Google Analytics &mdash; never your idea, never your key.</p></div>
-      <div class="honest__i"><h3>It separates proof from guesswork</h3><p>Every claim carries its support — <b>proved</b>, <b>asserted</b>, or <b>estimated</b>. The marks live inside the document and survive export, print, and re-import.</p></div>
-    </div>
-    <div class="integra">
-      <p>The first of those is <b>INTEGRA</b> — the governance protocol this tool runs under, and the one of the four it is actually responsible for. The others are how Idea Forge Pro is built. There is no switch to turn it off, because a layer you can disable isn't one.</p>
-      <a class="integra__stamp" href="/integra.html">
-        <img src="/assets/integra-badge.webp" alt="Powered by INTEGRA" width="640" height="142">
-        <span class="integra__cta">What this means <span class="arw">&rarr;</span></span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<section class="close">
-  <div class="wrap">
-    <p class="eyebrow">Ten minutes, no product required</p>
-    <h2 class="disp">Find out now, not in six months.</h2>
-    <p>Free, in your browser, on your own key. If the idea is bad, you'll know before lunch.</p>
-    <div class="close__cta"><a class="btn btn--go" href="https://app.ideaforgepro.com">Forge an idea free</a></div>
-  </div>
-</section>
-
-<div class="forge-foot"><div class="forge-foot-seam"></div></div>
 <footer class="foot">
   <div class="wrap foot__in">
     <span class="foot__mark"><img src="/assets/mark.webp" alt="" width="22" height="22"> Idea Forge Pro</span>
     <a class="foot__integra" href="/integra.html">Powered by INTEGRA</a>
-    <span class="foot__ledger">Google Analytics counts visits here and sets a cookie. Your idea and your API key never leave your browser.</span>
+    <span class="foot__ledger">Analytics counts visits and sets a cookie. Your idea and key never leave your browser.</span>
     <span>© 2026 ideaforgepro.com</span>
   </div>
 </footer>

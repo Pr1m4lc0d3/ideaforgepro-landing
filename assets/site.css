@@ -1,0 +1,92 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   SITE SHELL — tokens, type, buttons, nav, page head, close, footer.
+
+   personas.html carried a note that the third copy of this shell should trigger
+   an extraction. This is that extraction, done for the pages it could be done
+   safely on: index.html, gates.html, sell-kit.html, honest.html.
+
+   personas.html and integra.html still hold their own copies ON PURPOSE — they
+   have drifted (nav height, --fs scale) and reconciling them is its own task, not
+   a side effect of a landing rewrite. Fold them in the next time either is touched.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ═══ tokens ═══ Palette sampled from the mark itself: the anvil's cool white
+   (#E8F1F8) and the bulb's amber (#F79423, measured R247 G148 B35). */
+:root{
+  --pitch:#08090C; --iron:#101319; --raise:#161A22; --edge:#212734; --edge-2:#2E3747;
+  --neon:#E8F1F8; --ash:#8A97A8; --ash-dim:#5D6979;
+  --ember:#F79423; --gold:#FFD23F; --cold:#6B7686;
+  --display:"Big Shoulders Display","Haettenschweiler","Arial Narrow",sans-serif;
+  --body:"Archivo",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --wrap:1160px; --gut:28px;
+  --fs-h1:clamp(44px,7vw,86px); --fs-h2:clamp(28px,4vw,42px); --fs-lead:clamp(17px,2vw,21px);
+}
+*{box-sizing:border-box}
+html{background:var(--pitch);-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--neon);font:400 17px/1.65 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--ember);margin:0 0 16px}
+.disp{font-family:var(--display);font-weight:800;line-height:.92;letter-spacing:-.01em;text-transform:uppercase}
+:focus-visible{outline:2px solid var(--ember);outline-offset:4px}
+
+/* ═══ buttons ═══ */
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 16px/1 var(--body);
+  padding:16px 26px;border:1px solid transparent;cursor:pointer;
+  transition:background .16s,border-color .16s,color .16s}
+.btn--go{background:var(--ember);color:#150A00}
+.btn--go:hover{background:var(--gold)}
+.btn--quiet{border-color:var(--edge-2);color:var(--neon)}
+.btn--quiet:hover{border-color:var(--ember);color:var(--ember)}
+.btn--sm{padding:11px 18px;font-size:14px}
+/* the arrow leans out on hover — the only motion a link gets */
+.btn .arw{transition:transform .16s ease}
+.btn:hover .arw{transform:translateX(3px)}
+
+/* ═══ brand ═══ */
+.brand{display:inline-flex;align-items:center;gap:11px}
+.brand img{height:40px;width:auto;position:relative;top:-1px;
+  filter:drop-shadow(0 0 9px rgba(247,148,35,.55))}
+.brand span{font-family:var(--display);font-weight:800;font-size:23px;line-height:1;
+  letter-spacing:.02em;text-transform:uppercase}
+
+/* ═══ nav — sub-pages only. The home page has no bar: on a single surface a
+   sticky header would spend height on a link to the page you are already on. ═══ */
+.nav{position:sticky;top:0;z-index:20;background:rgba(8,9,12,.86);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--edge)}
+.nav__in{display:flex;align-items:center;justify-content:space-between;height:64px}
+
+/* ═══ sub-page head ═══ */
+.top{border-bottom:1px solid var(--edge);padding:clamp(44px,6vw,78px) 0 clamp(40px,5vw,64px)}
+.top h1{font-size:var(--fs-h1);margin:0;max-width:15ch}
+.top h1 em{font-style:normal;color:var(--ember)}
+.expand{margin:24px 0 0;font:400 var(--fs-lead)/1.6 var(--body);color:var(--ash);max-width:60ch}
+.expand b{color:var(--neon);font-weight:600}
+.back{display:inline-block;font-size:15px;color:var(--ash);
+  border-bottom:1px solid var(--edge-2);padding-bottom:2px}
+.back:hover{color:var(--ember);border-color:var(--ember)}
+.top .back{margin:30px 0 0}
+
+/* ═══ sub-page body + close ═══ */
+.body{padding:clamp(44px,6vw,76px) 0}
+.close{padding:clamp(48px,7vw,84px) 0;border-top:1px solid var(--edge)}
+.close h2{font-size:var(--fs-h2);margin:0;max-width:18ch}
+.close p{color:var(--ash);margin:16px 0 0;max-width:52ch}
+.close__cta{margin:30px 0 0;display:flex;gap:14px;flex-wrap:wrap}
+
+/* ═══ footer ═══ The bed of coals that closes every surface. The image is a
+   background on the strip itself rather than an extra block, so the footer
+   costs no height it wasn't already spending on its own text. */
+.foot{position:relative;padding:22px 0 26px;color:var(--ash-dim);font-size:13.5px;
+  border-top:1px solid var(--edge);
+  background:linear-gradient(180deg,rgba(8,9,12,.93),rgba(8,9,12,.82)),
+    url("/assets/forge-coals.webp") bottom center/cover no-repeat}
+.foot__in{display:flex;align-items:center;justify-content:space-between;gap:14px 22px;flex-wrap:wrap}
+.foot__mark{display:flex;align-items:center;gap:9px;color:var(--ash)}
+.foot__mark img{height:20px;width:auto;opacity:.85}
+.foot__integra{border-bottom:1px solid var(--edge-2);padding-bottom:1px}
+.foot__integra:hover{color:var(--ember);border-color:var(--ember)}
+.foot__ledger{flex:1 1 20rem;min-width:0;opacity:.8;line-height:1.5}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
