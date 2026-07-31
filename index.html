@@ -70,6 +70,10 @@ body{min-height:100svh;display:flex;flex-direction:column;background:transparent
 .say h1 em{font-style:normal;color:var(--ember)}
 .say__sub{font-size:clamp(15px,1.4vw,18px);color:var(--ash);max-width:44ch;margin:12px 0 0}
 .say__sub b{color:var(--neon);font-weight:600}
+/* the ask, stated before the click — a left rule marks it as the spec note it is */
+.needs{margin:12px 0 0;padding-left:13px;border-left:2px solid var(--edge-2);
+  font-size:13.5px;line-height:1.5;color:var(--ash);max-width:56ch}
+.needs b{color:var(--ember);font-weight:600}
 /* ═══ THE ACT ═══ the mark and the door, stacked, on the right ════════════════
    The anvil and the button are ONE object — both exactly as wide as .act, so the
    pair reads as a single target, not a decoration beside a link. .act's width is
@@ -95,7 +99,7 @@ body{min-height:100svh;display:flex;flex-direction:column;background:transparent
 .enter:hover .arw{transform:translateX(4px)}
 /* The trust line is the caption ON the control, not a note in the headline
    column — it does its work at the moment of the click. */
-.fine{margin:10px 0 0;font-size:13px;color:var(--ash-dim);text-align:center}
+.fine{margin:10px 0 0;font-size:12.5px;color:var(--ash-dim);text-align:center}
 /* Tightest footer on the site: its pixels are the doors' pixels. Sub-pages keep
    the roomier shared version. */
 .foot{padding:clamp(9px,1.6svh,18px) 0;font-size:12.5px}
@@ -137,6 +141,13 @@ body{min-height:100svh;display:flex;flex-direction:column;background:transparent
 }
 /* The doors' second line is the first thing worth spending height on. */
 @media (max-width:460px){.doors span:not(.go){display:none}}
+/* The ask survives on every screen; only its detail is spent — a phone keeps
+   "one API key" and where to get it, and drops the list the app itself states. */
+@media (max-width:560px){.needs .needs__x{display:none}
+  .needs{font-size:12.5px;margin:9px 0 0;padding-left:10px}
+  .say__sub{font-size:14px;margin:10px 0 0}
+  .mark img{max-height:clamp(56px,9svh,120px)}
+  .fine{font-size:11.5px;margin:8px 0 0}}
 
 /* ═══ HEIGHT: three tiers, because height is the budget ═══════════════════════
    Measured, not guessed: each size was set by loading this page in a same-origin
@@ -158,7 +169,7 @@ body{min-height:100svh;display:flex;flex-direction:column;background:transparent
   .fine{font-size:12px;margin:6px 0 0}
   /* width:auto is LOAD-BEARING beside a max-height: .mark img sets width:100%, a
      definite width, so capping only height SQUASHES the anvil (measured 269x80). */
-  .mark img{width:auto;max-height:clamp(88px,14svh,150px)}
+  .mark img{width:auto;max-height:clamp(64px,10svh,130px)}
   .doors a{padding:9px 10px}
   .doors b{font-size:16px}
   .doors .go{font-size:12px;padding-top:5px}
@@ -171,14 +182,18 @@ body{min-height:100svh;display:flex;flex-direction:column;background:transparent
 /* Phone landscape. 390px of height holds the claim, the door and the signposts,
    or it holds a portrait mark — the mark is what a reader can do without. */
 @media (max-height:620px){
-  /* only the MARK goes — .act still holds the button, which never goes anywhere */
+  /* only the MARK goes — .act still holds the button, which never goes anywhere.
+     The ask keeps its headline half; the enumeration is what a 390px-tall
+     landscape viewport cannot afford. */
   .mark{display:none}
+  .needs .needs__x{display:none}
+  .needs{font-size:12.5px;margin:9px 0 0}
   .enter{margin:0}
   .brand img{height:30px}
   .brand span{font-size:19px}
   .say .brand{margin:0 0 8px}
   .say h1{font-size:clamp(22px,3vw,32px)}
-  .stage{gap:10px;padding:8px 0}
+  .stage{gap:8px;padding:7px 0}
 }
 /* …and once it goes, a wide-but-short viewport has room to stand the signposts
    BESIDE the claim instead of under it, which is where the height comes from. */
@@ -187,6 +202,17 @@ body{min-height:100svh;display:flex;flex-direction:column;background:transparent
   .stage__in{flex:1 1 60%;max-width:696px}
   .doors{flex:1 1 40%;max-width:464px;grid-template-columns:repeat(2,1fr)}
 }
+/* The one band that still overflowed once the ask was added: a narrow phone not
+   short enough for the landscape tier (375x635). Bounded BELOW at 621 too, or it
+   overrides that tier and costs 360x560 five pixels. */
+@media (max-width:560px) and (max-height:700px) and (min-height:621px){
+  .say h1{font-size:23px}
+  .mark img{max-height:clamp(48px,7.5svh,110px)}
+  .doors a{padding:8px 10px}
+  .needs{margin:7px 0 0}
+  .stage{gap:8px;padding:7px 0}}
+/* ^ LAST ON PURPOSE: the height tiers set the same properties and, at equal
+   specificity, the later rule wins. Filed earlier it saved 2px of the 20 needed. */
 </style>
 <script src="/assets/analytics.js" defer></script>
 </head>
@@ -201,13 +227,16 @@ body{min-height:100svh;display:flex;flex-direction:column;background:transparent
       <p class="eyebrow">Sell before you build</p>
       <h1 class="disp">Stop building startups <em>nobody buys.</em></h1>
       <p class="say__sub">Seven gates. It tells you which one your idea fails — and when the idea is bad, <b>it says so.</b></p>
+      <!-- What the tool needs BEFORE you click. The app opens straight onto its
+           connect panel; the landing never warned a key was coming. -->
+      <p class="needs"><b>You bring one API key.</b><span class="needs__x"> OpenRouter, OpenAI, DeepSeek, Groq — or any OpenAI-compatible endpoint.</span> The forge links you to the page that issues one.<span class="needs__x"> Voice-to-text is optional and free on Groq.</span></p>
     </div>
     <div class="act">
       <span class="mark">
         <img src="/assets/anvil@2x.webp" alt="A lightbulb whose filament forms a question mark, forged as one continuous line into an anvil" width="667" height="883" fetchpriority="high">
       </span>
       <a class="enter" href="https://app.ideaforgepro.com">Enter the forge <span class="arw">&rarr;</span></a>
-      <p class="fine">Free · runs in your browser · your own API key · nothing reaches our servers</p>
+      <p class="fine">Free · no account · in your browser · nothing reaches our servers</p>
     </div>
   </div>
 
