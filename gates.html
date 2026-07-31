@@ -32,19 +32,65 @@
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?1">
 <style>
-/* ═══ SIGNATURE — the seven gates as cooling metal ═══
-   Gate 1 leaves the fire white-hot; by gate 7 the idea is cold, hard iron.
-   The colour ramp is the content: it is what forging does. */
-.gates{border-top:1px solid var(--edge)}
-.gate{display:grid;grid-template-columns:96px 1fr;gap:28px;align-items:baseline;
-  padding:26px 0;border-bottom:1px solid var(--edge)}
-.gate__n{font-family:var(--display);font-weight:800;font-size:58px;line-height:.8;
-  color:var(--heat);text-shadow:0 0 24px color-mix(in srgb,var(--heat) 45%,transparent)}
-.gate h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.01em;
-  font-size:27px;margin:0 0 7px;color:var(--neon)}
-.gate p{margin:0;color:var(--ash);max-width:64ch}
-.gates__foot{margin:22px 0 0;font-size:15px;color:var(--ash-dim)}
-@media (max-width:900px){.gate{grid-template-columns:64px 1fr;gap:18px}.gate__n{font-size:42px}}
+/* ═══ SEVEN COLUMNS, ONE WINDOW ══════════════════════════════════════════════
+   The gates were seven stacked rows and the page was a scroll. Now they are a
+   single row of columns with ONE panel that opens underneath the whole row —
+   click any column to fill it, click the next to cycle the same window, close
+   to clear it.
+
+   The strip and the window are SIBLINGS, not cells of one grid. Pinning the
+   seven buttons to `grid-row:1` did keep the panel below them, but it also
+   forced the row to hold all seven no matter what the template said: the 4- and
+   3-column rules never applied, and `grid-column:1/-1` spans only the EXPLICIT
+   columns, so the panel came up 323-445px short between 620px and 1000px.
+   Two siblings wrap freely and the window is always full width.
+
+   Gate 1 leaves the fire white-hot; by gate 7 the idea is cold iron. The colour
+   ramp is the content — it is what forging does — so it survives the redesign
+   on the numerals and on the open panel's top edge. */
+.gates__row{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.gate{display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+  padding:16px 14px 14px;background:var(--iron);border:1px solid var(--edge);
+  border-top:2px solid var(--heat);cursor:pointer;text-align:left;font:inherit;color:inherit;
+  transition:background .16s,border-color .16s,transform .16s}
+.gate:hover{background:var(--raise);transform:translateY(-2px)}
+.gate__n{font-family:var(--display);font-weight:800;font-size:38px;line-height:.8;
+  color:var(--heat);text-shadow:0 0 20px color-mix(in srgb,var(--heat) 45%,transparent)}
+.gate__name{font-family:var(--display);font-weight:700;text-transform:uppercase;
+  font-size:17px;line-height:1.05;color:var(--neon)}
+.gate__more{margin-top:auto;font:600 11px/1 var(--body);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ash-dim)}
+.gate[aria-expanded="true"]{background:var(--raise);border-color:var(--edge-2)}
+.gate[aria-expanded="true"] .gate__more{color:var(--ember)}
+
+/* the one window */
+.panel{margin-top:10px;padding:26px 28px 24px;
+  background:var(--iron);border:1px solid var(--edge);border-top:2px solid var(--heat)}
+.panel h2{font-family:var(--display);font-weight:700;text-transform:uppercase;
+  font-size:26px;margin:0 0 12px;color:var(--neon)}
+.panel p{margin:0;color:var(--ash);max-width:70ch;font-size:16.5px}
+.panel__foot{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:22px 0 0}
+.panel__x{font:600 13px/1 var(--body);color:var(--ash);background:none;cursor:pointer;
+  border:1px solid var(--edge-2);padding:10px 16px}
+.panel__x:hover{border-color:var(--ember);color:var(--ember)}
+.gates__foot{margin:26px 0 0;font-size:15px;color:var(--ash-dim)}
+
+/* Seven items divide evenly into seven columns and nothing else, so a wrapped
+   strip always leaves a remainder. That is fine HERE and only here: these are
+   ordinals, so 4+3 still reads as a sequence, where an orphaned card in a set of
+   four peers reads as a broken grid.
+   The strip stays a strip at every width rather than becoming a seven-row list —
+   on a phone that list would push the window a full screen below the tile you
+   just tapped. Two columns keeps it four rows tall and the window in view. */
+@media (max-width:1000px){.gates__row{grid-template-columns:repeat(4,1fr)}}
+@media (max-width:760px){.gates__row{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:520px){
+  .gates__row{grid-template-columns:repeat(2,1fr);gap:6px}
+  .gate{padding:12px 12px 10px}
+  .gate__n{font-size:30px}
+  .gate__name{font-size:15px}
+  .panel{padding:20px 18px}
+}
 </style>
 <script src="/assets/analytics.js" defer></script>
 </head>
@@ -63,46 +109,53 @@
     <!-- nbsp welds "the slag." so the measure cannot break after the article
          and strand the payoff word on its own line -->
     <h1 class="disp">Every gate separates the bloom from <em>the&nbsp;slag.</em></h1>
-    <p class="expand">Founders build first and find out last — six months of code, then a search for someone to pay for it. <b>Most ideas die in the market, not in the code.</b> Each gate below has a graduation test. Fail one and the forge makes you fix it before you go on, because a weak buyer poisons every answer that follows.</p>
+    <p class="expand">Founders build first and find out last — six months of code, then a search for someone to pay for it. <b>Most ideas die in the market, not in the code.</b> Each gate has a graduation test. Fail one and the forge makes you fix it before you go on, because a weak buyer poisons every answer that follows.</p>
     <a class="back" href="/">← Back to Idea Forge Pro</a>
   </div>
 </header>
 
 <section class="body">
-  <!-- .gates is nested INSIDE .wrap rather than sharing it: its border-top is a
-       content rule, and on the wrap it drew 28px past the gutter on each side
-       while the row separators below stopped at the gutter. -->
-  <div class="wrap"><div class="gates">
-    <div class="gate" style="--heat:#FFF6E0">
-      <div class="gate__n">01</div>
-      <div><h2>Buyer</h2><p>A buyer type sharp enough to go and find — “owners of single-location coffee roasters”, not “small businesses” — who already pay for something here, and you can say where they gather. The named individual comes later, at the test.</p></div>
-    </div>
-    <div class="gate" style="--heat:#FFD23F">
-      <div class="gate__n">02</div>
-      <div><h2>Problem</h2><p>In their words, not yours, with a reason to act now rather than next year. If they are in pain: frequent, and already worked around. If they buy this because they <em>want</em> it, the honest answer is the appetite they already spend on — an invented ache fails here.</p></div>
-    </div>
-    <div class="gate" style="--heat:#FFA82A">
-      <div class="gate__n">03</div>
-      <div><h2>Offer &amp; price</h2><p>The outcome they are buying, at a number they say yes to without a meeting. Defensible against doing nothing.</p></div>
-    </div>
-    <div class="gate" style="--heat:#F79423">
-      <div class="gate__n">04</div>
-      <div><h2>Value artifact</h2><p>Something real you can hand over before the next thing gets built — and that does the selling while you sleep.</p></div>
-    </div>
-    <div class="gate" style="--heat:#DC5F1E">
-      <div class="gate__n">05</div>
-      <div><h2>Pre-build test</h2><p>A costly, revealed commitment — a real dollar, a signature — with the pass line and the kill line written down before you start. Never a poll or a waitlist. Free product? Then name who eventually pays, and when.</p></div>
-    </div>
-    <div class="gate" style="--heat:#A0431F">
-      <div class="gate__n">06</div>
-      <div><h2>Channel</h2><p>One channel, gone deep, aimed at people already showing intent. Not a list you bought.</p></div>
-    </div>
-    <div class="gate" style="--heat:#6B7686">
-      <div class="gate__n">07</div>
-      <div><h2>Builder spec</h2><p>Only now: the minimum build that delivers the promise. Cold, hard, and ready to hand to whoever writes it.</p></div>
+  <div class="wrap">
+    <!-- Every panel ships OPEN in the markup. The script closes all but the first
+         on load, so with JavaScript off this is still the full seven-gate page
+         rather than a row of dead buttons, and a crawler reads all of it. -->
+    <div class="gates" id="gates">
+      <div class="gates__row">
+      <button class="gate" style="--heat:#FFF6E0" aria-expanded="true" aria-controls="p1">
+        <span class="gate__n">01</span><span class="gate__name">Buyer</span><span class="gate__more">Open</span></button>
+      <button class="gate" style="--heat:#FFD23F" aria-expanded="false" aria-controls="p2">
+        <span class="gate__n">02</span><span class="gate__name">Problem</span><span class="gate__more">Open</span></button>
+      <button class="gate" style="--heat:#FFA82A" aria-expanded="false" aria-controls="p3">
+        <span class="gate__n">03</span><span class="gate__name">Offer &amp; price</span><span class="gate__more">Open</span></button>
+      <button class="gate" style="--heat:#F79423" aria-expanded="false" aria-controls="p4">
+        <span class="gate__n">04</span><span class="gate__name">Value artifact</span><span class="gate__more">Open</span></button>
+      <button class="gate" style="--heat:#DC5F1E" aria-expanded="false" aria-controls="p5">
+        <span class="gate__n">05</span><span class="gate__name">Pre-build test</span><span class="gate__more">Open</span></button>
+      <button class="gate" style="--heat:#A0431F" aria-expanded="false" aria-controls="p6">
+        <span class="gate__n">06</span><span class="gate__name">Channel</span><span class="gate__more">Open</span></button>
+      <button class="gate" style="--heat:#6B7686" aria-expanded="false" aria-controls="p7">
+        <span class="gate__n">07</span><span class="gate__name">Builder spec</span><span class="gate__more">Open</span></button>
+      </div>
+
+      <div class="gates__window">
+      <div class="panel" id="p1" style="--heat:#FFF6E0" role="region"><h2>01 — Buyer</h2>
+        <p>A buyer type sharp enough to go and find — “owners of single-location coffee roasters”, not “small businesses” — who already pay for something here, and you can say where they gather. The named individual comes later, at the test.</p></div>
+      <div class="panel" id="p2" style="--heat:#FFD23F" role="region"><h2>02 — Problem</h2>
+        <p>In their words, not yours, with a reason to act now rather than next year. If they are in pain: frequent, and already worked around. If they buy this because they <em>want</em> it, the honest answer is the appetite they already spend on — an invented ache fails here.</p></div>
+      <div class="panel" id="p3" style="--heat:#FFA82A" role="region"><h2>03 — Offer &amp; price</h2>
+        <p>The outcome they are buying, at a number they say yes to without a meeting. Defensible against doing nothing.</p></div>
+      <div class="panel" id="p4" style="--heat:#F79423" role="region"><h2>04 — Value artifact</h2>
+        <p>Something real you can hand over before the next thing gets built — and that does the selling while you sleep.</p></div>
+      <div class="panel" id="p5" style="--heat:#DC5F1E" role="region"><h2>05 — Pre-build test</h2>
+        <p>A costly, revealed commitment — a real dollar, a signature — with the pass line and the kill line written down before you start. Never a poll or a waitlist. Free product? Then name who eventually pays, and when.</p></div>
+      <div class="panel" id="p6" style="--heat:#A0431F" role="region"><h2>06 — Channel</h2>
+        <p>One channel, gone deep, aimed at people already showing intent. Not a list you bought.</p></div>
+      <div class="panel" id="p7" style="--heat:#6B7686" role="region"><h2>07 — Builder spec</h2>
+        <p>Only now: the minimum build that delivers the promise. Cold, hard, and ready to hand to whoever writes it.</p></div>
+      </div>
     </div>
     <p class="gates__foot">The colour does the talking — an idea enters white-hot and leaves as cold iron.</p>
-  </div></div>
+  </div>
 </section>
 
 <section class="close">
@@ -125,6 +178,46 @@
     <span>© 2026 ideaforgepro.com</span>
   </div>
 </footer>
+
+<script>
+(function(){
+  var root = document.getElementById('gates');
+  if (!root) return;
+  var tabs = [].slice.call(root.querySelectorAll('.gate'));
+  var panels = tabs.map(function(t){ return document.getElementById(t.getAttribute('aria-controls')); });
+
+  panels.forEach(function(p, i){
+    if (!p) return;
+    p.setAttribute('aria-labelledby', tabs[i].id || (tabs[i].id = 'g' + (i+1)));
+    // the close control is added here, not in the markup, so it never appears
+    // on the no-JS page where there is nothing to close
+    var foot = document.createElement('div');
+    foot.className = 'panel__foot';
+    var x = document.createElement('button');
+    x.type = 'button'; x.className = 'panel__x'; x.textContent = 'Close';
+    x.addEventListener('click', function(){ show(-1); tabs[i].focus(); });
+    foot.appendChild(x);
+    p.appendChild(foot);
+  });
+
+  function show(n){
+    tabs.forEach(function(t, i){
+      var open = i === n;
+      t.setAttribute('aria-expanded', open ? 'true' : 'false');
+      t.querySelector('.gate__more').textContent = open ? 'Close' : 'Open';
+      if (panels[i]) panels[i].hidden = !open;
+    });
+  }
+  tabs.forEach(function(t, i){
+    t.type = 'button';
+    // clicking the open one closes it; clicking another cycles the same window
+    t.addEventListener('click', function(){
+      show(t.getAttribute('aria-expanded') === 'true' ? -1 : i);
+    });
+  });
+  show(0);
+})();
+</script>
 
 </body>
 </html>
