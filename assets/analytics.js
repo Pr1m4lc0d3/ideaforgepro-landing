@@ -22,6 +22,16 @@
 (function () {
   if (typeof window.gtag !== "function") return; // inline snippet missing → stay silent, break nothing
 
+  // ── 0. Roll-up property ─────────────────────────────────────────────────────
+  // The same measurement id sits on every one of his sites, so a visit that
+  // crosses domains stays ONE session instead of restarting as a fresh referral.
+  // Unlike the primary tag above, this one does NOT need to be inline: the file
+  // header's rule is about Google's tag DETECTION, which only has to find the
+  // property this site is verified against. The roll-up just needs to fire.
+  // It lives here rather than in five <head>s so there is one copy to change —
+  // and landing/index.html is at its anti-bloat cap, so it could not take more.
+  window.gtag("config", "G-F7WLK0CG8X");
+
   function ev(name, params) { window.gtag("event", name, params || {}); }
 
   // ── 1. Clicks ───────────────────────────────────────────────────────────────
